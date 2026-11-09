@@ -7,7 +7,7 @@
 
 **維護中**。
 
-- 最後一次 commit：`a08c08f`（建立 global 與 project 二分目錄並同步相關設定與腳本）
+- 最後一次 commit：`6f5be83`（建立 global 與 project 二分目錄並同步相關設定與腳本）
 
 已完成：
 
@@ -20,6 +20,7 @@
 7. 收納 Anthropic 官方文檔四件套（`xlsx`、`pdf`、`docx`、`pptx`）與 `skill-creator` 至 `project/` 專案備用母本庫，作為跨專案調用與進階辦公/技能開發範本。
 8. 清理專案根目錄搬移殘留之 `gemini-web-imagegen` 快取資料夾，確保倉庫結構嚴格遵循 `global/` 與 `project/` 二分規範。
 9. 為本專案 `ai.agent_skills` 安裝 `.agents/skills/skill-creator`，作為本倉庫開發、優化與評測 Agent 技能之常駐專案技能。
+10. 將辦公文檔四件套（Word、Excel、PPT、PDF）重構合併為單一聚合技能 project/document-skills/，採 Router 架構分流與共用 scripts/office/ 去重，並安全移除原分散目錄。
 
 ## 二、使用者已確認的事
 
@@ -88,10 +89,7 @@
 |---|---|---|---|
 | D:\AI_Workspace\ai.agent_skills\global\opencode-runner | opencode-runner | 自訂 | 調用 OpenCode CLI 唯讀審查與比對規範（全域技能母本，開發機與管制機通用） |
 | D:\AI_Workspace\ai.agent_skills\global\frontend-design | frontend-design | Anthropic 官方 | 消除 AI 樣板感，提供現代高質感 Web UI/UX 設計指引、色彩約束、字體階層與微動效規範 |
-| D:\AI_Workspace\ai.agent_skills\project\xlsx | xlsx | Anthropic 官方 | 試算表處理、公式重新計算（recalc.py）、格式化與資料清洗（專案備用母本） |
-| D:\AI_Workspace\ai.agent_skills\project\pdf | pdf | Anthropic 官方 | PDF 文字與表格提取、合併/拆分、表單填寫、浮水印與 OCR（專案備用母本） |
-| D:\AI_Workspace\ai.agent_skills\project\docx | docx | Anthropic 官方 | 專業 Word 文件排版、目錄與階層樣式、表格排版與修訂追蹤（專案備用母本） |
-| D:\AI_Workspace\ai.agent_skills\project\pptx | pptx | Anthropic 官方 | 簡報投影片架構、母片佈局、投影片生成與大綱重整（專案備用母本） |
+| D:\AI_Workspace\ai.agent_skills\project\document-skills | document-skills | Anthropic 官方 | Office 與 PDF 全功能處理套件（Word 排版、Excel recalc 重算、PPT 生成、PDF 提取填表） |
 | D:\AI_Workspace\ai.agent_skills\project\skill-creator | skill-creator | Anthropic 官方 | 建立、優化、評測與除錯 Agent Skills 的標準指引與評估工具（專案備用母本） |
 | D:\AI_Workspace\ai.agent_skills\project\gemini-web-imagegen | gemini-web-imagegen | 自訂 | 免 API 金鑰 2K AI 生圖與圖生圖工具（專案備用母本，需要時放入特定專案） |
 | D:\AI_Workspace\ai.agent_skills\project\google-flow-bridge | google-flow-bridge | 自訂 | 免 API 金鑰調用 Google Flow 生成 2K 圖片或 Veo 影片（專案備用母本，需要時放入特定專案） |
@@ -119,7 +117,7 @@
 ## 五、試過但無效的做法（接手者不要重複）
 
 - （尚無無效記錄）
-- 最後一個正常運作的 commit：`a08c08f`
+- 最後一個正常運作的 commit：`6f5be83`
 
 ## 六、下一步
 
@@ -148,3 +146,4 @@
 | 2026-11-10 | 住家開發機 | 收納 Anthropic 官方文檔四件套（xlsx, pdf, docx, pptx）與 skill-creator 至 project/ 備用母本庫，通過 Python 腳本編譯與 frontmatter 驗證；清理根目錄殘留之快取目錄 |
 | 2026-11-10 | 住家開發機 | 為 ai.agent_skills 安裝 .agents/skills/skill-creator 專案技能；全面檢核校正 PROGRESS.md 與 README.md，更新 commit 雜湊與業務專案技能清單 |
 | 2026-11-10 | 住家開發機 | 依據 /skill-creator 標準完成三大自訂技能（google-flow-bridge、gemini-web-imagegen、opencode-runner）之安全去識別化、路徑泛化、觸發描述打磨，並將部署腳本更名為 deploy_global_skills 且通過全域同步部署驗證 |
+| 2026-11-10 | 住家開發機 | 將辦公文檔四件套合併為單一聚合技能 project/document-skills，去重共用 office 模組並通過全數 26 個腳本編譯與驗證 |
