@@ -7,7 +7,7 @@
 
 **維護中**。
 
-- 最後一次 commit：`6f5be83`（建立 global 與 project 二分目錄並同步相關設定與腳本）
+- 最後一次 commit：`acd8fc6`（建立 global 與 project 二分目錄並同步相關設定與腳本）
 
 已完成：
 
@@ -117,7 +117,7 @@
 ## 五、試過但無效的做法（接手者不要重複）
 
 - （尚無無效記錄）
-- 最後一個正常運作的 commit：`6f5be83`
+- 最後一個正常運作的 commit：`acd8fc6`
 
 ## 六、下一步
 
@@ -147,3 +147,4 @@
 | 2026-11-10 | 住家開發機 | 為 ai.agent_skills 安裝 .agents/skills/skill-creator 專案技能；全面檢核校正 PROGRESS.md 與 README.md，更新 commit 雜湊與業務專案技能清單 |
 | 2026-11-10 | 住家開發機 | 依據 /skill-creator 標準完成三大自訂技能（google-flow-bridge、gemini-web-imagegen、opencode-runner）之安全去識別化、路徑泛化、觸發描述打磨，並將部署腳本更名為 deploy_global_skills 且通過全域同步部署驗證 |
 | 2026-11-10 | 住家開發機 | 將辦公文檔四件套合併為單一聚合技能 project/document-skills，去重共用 office 模組並通過全數 26 個腳本編譯與驗證 |
+| 2026-11-10 | 住家開發機 | 查證 Google 官方最新 Gems to Skills 轉型規範，於 README.md 增補上傳資料夾至 Gemini 官方網頁/App 之完整操作步驟 |

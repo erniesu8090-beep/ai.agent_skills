@@ -38,14 +38,14 @@
 
 ## 使用與部署方式
 
-### 1. 全域技能一鍵部署
+### 1. 全域技能一鍵部署（本機三大 Agent）
 若更新了全域技能（如 `global/opencode-runner`、`global/frontend-design`），或在新電腦環境初始化：
 - **Windows**：雙擊或執行 `deploy_global_skills.bat`
 - **Linux / macOS**：執行 `sh deploy_global_skills.sh`
 
 腳本會自動將全域技能鏡像複製至三大 Agent 的全域目錄，具備內容比對（相同自動略過）與 `.bak` 備份機制。
 
-### 2. 專案專屬技能取用
+### 2. 專案專屬技能取用（本機各專案）
 當特定專案（如影音創作、辦公自動化或逆向專案）需要特定技能時，直接複製該技能資料夾至專案根目錄的 `.agents/skills/`：
 ```powershell
 # 範例 1：將辦公文檔全功能套件複製至股票助理專案
@@ -57,3 +57,28 @@ Copy-Item -Recurse project\gemini-web-imagegen ..\media.projects\short.video_stu
 放入後隨該專案的 Git 倉庫進行提交與同步，完全不依賴外部全域環境。
 
 > **註**：本母本庫專案（`ai.agent_skills`）本身亦已於 `.agents/skills/skill-creator/` 安裝技能製作工具，常駐支援母本庫之技能擴充、撰寫與 Eval 評測。
+
+### 3. 安裝至 Google Gemini 官方網頁版 / 手機 App (gemini.google.com)
+Google Gemini 官方應用程式已全面將 Gems 升級為 **Skills（技能）** 架構，原生支援 `agentskills.io` 開放標準的 `SKILL.md`。
+
+> **⚠️ Gemini 官方 App 檔案格式白名單限制**：
+> 官方上傳介面目前**僅支援五種檔案類型**：**`PDF`、`CSV`、`PY`、`TXT`、`MD`**。
+> 若資料夾中夾帶 Python 編譯快取（`__pycache__/*.pyc`）、網頁檔（`.html`）或結構描述檔（`.xml`、`.xsd`），系統將拒絕上傳並提示不支援該類型。
+
+#### 上傳方式 A：單檔選取上傳（最推薦、最輕量）
+Gemini 雲端 App 主要是依據 Markdown 專家指南來引導雲端模型行為，直接選取文件最快速：
+1. 瀏覽器造訪 [gemini.google.com](https://gemini.google.com) ➜ 點選左側 **「Skills」** ➜ 點選 **「新增技能（Create Skill / +）」**。
+2. 點選 **「選取 檔案（Select Files）」**：
+   - 安裝 `skill-creator`：選取 `project/skill-creator/SKILL.md` 即可。
+   - 安裝 `document-skills`：選取 `project/document-skills/SKILL.md` 以及 `references/` 底下的 4 個指南（`docx.md`、`xlsx.md`、`pptx.md`、`pdf.md`）。
+3. 檢查名稱與觸發描述無誤後，點選 **「儲存 / 啟用」**。
+
+#### 上傳方式 B：整包資料夾上傳
+若希望上傳整個技能目錄，請確保資料夾內**無 `__pycache__` 或非白名單檔案**：
+1. 本專案已排除所有 `.pyc` 快取。
+2. 若資料夾內含 `.html`（如評測工具）或 `.xsd`，請先將其移除或移出，確保資料夾內僅存 `.py`、`.md`、`.txt`。
+3. 點選 **「選取 資料夾」** 進行上傳並儲存。
+
+#### 對話調用方式
+- **手動調用**：在任何 Gemini 對話框輸入 `@技能名稱`（例如 `@document-skills 請幫我做一份財務報表 Excel`）。
+- **自動觸發**：直接輸入需求（如「產出 16:9 簡報投影片」或「設計一個新的 Agent Skill」），Gemini 將自動匹配並載入該技能規範。
