@@ -1,6 +1,6 @@
 # PROGRESS　進度與交接
 
-> 最後更新：2026-11-08（住家開發機）
+> 最後更新：2026-11-09（公司開發機）
 > 新對話接手：先讀 `AGENTS.md` → 本檔
 
 ## 一、目前階段
@@ -21,8 +21,8 @@
 
 - **技能架構定案為二分法**：只區分「全域技能（Global）」與「專案專屬技能（Project-specific）」，不設中間領域層（2026-11-08 使用者確認）。
 - **母本庫對稱定位**：本倉庫定位為各 AI Agent 的**技能母本庫**，與 `ai.agent_rules` 規則母本庫功能完全對稱；兩者各自獨立無相依（2026-11-08 使用者確認）。
-- **全域技能唯一項**：`opencode-runner`（跨專案、跨引擎的唯讀審查與安全規範，開發機與管制機皆通用）。唯一真實維護本體定於 `ai.agent_skills\opencode-runner\`。
-- **多媒體技能處置**：`gemini-web-imagegen` 與 `google-flow-bridge` 確認屬專案專屬性質（非全域），現階段保留在 `ai.agent_skills` 作為備用與共用範本庫，待未來特定專案需要時再複製進該專案的 `.agents/skills/`（2026-11-08 使用者確認）。
+- **全域技能唯一項**：`opencode-runner`（跨專案、跨引擎的唯讀審查與安全規範，開發機與管制機皆通用）。唯一真實維護本體定於 `ai.agent_skills\global\opencode-runner\`。
+- **多媒體技能處置**：`gemini-web-imagegen` 與 `google-flow-bridge` 確認屬專案專屬性質（非全域），現階段保留在 `ai.agent_skills\project\` 作為備用與共用範本庫，待未來特定專案需要時再複製進該專案的 `.agents/skills/`（2026-11-08 使用者確認）。
 - **專案專屬技能部署原則**：隨專案各自的 Git 倉庫版本控管與同步，免額外安裝腳本或全域設定。
 
 ## 三、待使用者決定（下次討論從這裡開始）
@@ -82,9 +82,9 @@
 
 | 倉庫路徑 | 技能名稱 | 說明 |
 |---|---|---|
-| `D:\AI_Workspace\ai.agent_skills\opencode-runner` | `opencode-runner` | 調用 OpenCode CLI 唯讀審查與比對規範（唯一全域技能母本，開發機與管制機通用） |
-| `D:\AI_Workspace\ai.agent_skills\gemini-web-imagegen` | `gemini-web-imagegen` | 免 API 金鑰 2K AI 生圖與圖生圖工具（專案備用母本，需要時放入特定專案） |
-| `D:\AI_Workspace\ai.agent_skills\google-flow-bridge` | `google-flow-bridge` | 免 API 金鑰調用 Google Flow 生成 2K 圖片或 Veo 影片（專案備用母本，需要時放入特定專案） |
+| `D:\AI_Workspace\ai.agent_skills\global\opencode-runner` | `opencode-runner` | 調用 OpenCode CLI 唯讀審查與比對規範（唯一全域技能母本，開發機與管制機通用） |
+| `D:\AI_Workspace\ai.agent_skills\project\gemini-web-imagegen` | `gemini-web-imagegen` | 免 API 金鑰 2K AI 生圖與圖生圖工具（專案備用母本，需要時放入特定專案） |
+| `D:\AI_Workspace\ai.agent_skills\project\google-flow-bridge` | `google-flow-bridge` | 免 API 金鑰調用 Google Flow 生成 2K 圖片或 Veo 影片（專案備用母本，需要時放入特定專案） |
 
 ---
 
@@ -110,7 +110,7 @@
 
 ## 六、下一步
 
-1. **依專案需求複製技能**：未來當多媒體或遊戲專案有生圖或影片生成需求時，自本母本庫複製 `gemini-web-imagegen` 或 `google-flow-bridge` 至該專案的 `.agents/skills/` 內。
+1. **依專案需求複製技能**：未來當多媒體或遊戲專案有生圖或影片生成需求時，自本母本庫複製 `project/gemini-web-imagegen` 或 `project/google-flow-bridge` 至該專案的 `.agents/skills/` 內。
 2. **新增共用技能**：若開發出新的跨專案共用技能，在此建立獨立目錄、撰寫 `SKILL.md`，若屬全域技能則同步加入 `deploy_skills.bat` / `.sh` 的部署清單。
 
 ## 七、接手須知（環境與工具）
@@ -129,3 +129,4 @@
 | 2026-11-08 | 住家開發機 | 建立 PROGRESS.md，完成本機全域、Antigravity 內建/外掛、共用技能庫與專案技能的完整盤點 |
 | 2026-11-08 | 住家開發機 | 確立二分架構（全域唯一 opencode-runner；生圖/影音保留為專案備用庫，需要再放） |
 | 2026-11-08 | 住家開發機 | 與 ai.agent_rules 徹底獨立解耦：建立 deploy_skills 部署腳本，通過三大全域目錄驗證，更新母本庫文檔 |
+| 2026-11-09 | 公司開發機 | 建立 global/ 與 project/ 實體分類資料夾，全面更新部署腳本、專案規則、說明文件與驗證路徑 |

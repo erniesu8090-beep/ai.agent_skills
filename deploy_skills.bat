@@ -20,7 +20,7 @@ exit /b 0
 :deploy_skill
 set "SKILL_NAME=%~1"
 set "TARGET_DIR=%~2"
-set "SRC_FILE=%CD%\%SKILL_NAME%\SKILL.md"
+set "SRC_FILE=%CD%\global\%SKILL_NAME%\SKILL.md"
 set "DST_FILE=%TARGET_DIR%\SKILL.md"
 
 if not exist "%SRC_FILE%" (

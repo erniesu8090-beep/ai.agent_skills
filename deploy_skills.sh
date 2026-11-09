@@ -9,7 +9,7 @@ ts=$(date +%Y%m%d_%H%M%S)
 deploy_skill() {
     skill_name="$1"
     target_dir="$2"
-    src_file="$(pwd)/$skill_name/SKILL.md"
+    src_file="$(pwd)/global/$skill_name/SKILL.md"
     dst_file="$target_dir/SKILL.md"
 
     if [ ! -f "$src_file" ]; then
