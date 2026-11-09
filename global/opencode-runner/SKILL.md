@@ -1,6 +1,6 @@
 ---
 name: opencode-runner
-description: 調用 OpenCode CLI 執行跨引擎唯讀審查、代碼檢查或獨立比對任務。提供安全的 CLI 封裝指引（自動帶 --auto 與 < nul 避免卡住）與模型選用建議。
+description: 調用 OpenCode CLI 作為獨立子代理（Subagent）執行跨引擎唯讀審查、代碼檢查或獨立比對任務。當使用者提到「OpenCode 審查」、「調用 OpenCode」、「換模型挑錯」、「獨立比對」、「交叉驗證」，或在大改動/高風險邏輯（登入、權限、金流、檔案刪除）完成後需要獨立審查時載入。提供安全唯讀鎖定（--agent plan）、防卡死封裝（< nul / < /dev/null）、動態工作池並行控制與模型選用建議。
 ---
 
 # OpenCode CLI Runner (子代理執行器)
@@ -14,15 +14,24 @@ description: 調用 OpenCode CLI 執行跨引擎唯讀審查、代碼檢查或�
 
 ## 命令調用安全規範（防卡死與唯讀鎖定）
 
-在 Windows 終端或背景子進程執行 OpenCode CLI 時，為避免 CLI 因等待 stdin EOF 輸入信號而無限期卡住，**並強制鎖定唯讀權限避免竄改檔案**，必須遵循以下格式（預設帶入 Plan 唯讀模式與 DeepSeek V4.1 Flash Free + High）：
+在終端機或背景子進程執行 OpenCode CLI 時，為避免 CLI 因等待 stdin EOF 輸入信號而無限期卡住，**並強制鎖定唯讀權限避免竄改檔案**，必須遵循以下格式（預設帶入 Plan 唯讀模式與 DeepSeek V4.1 Flash Free + High）：
 
+### 1. Windows (CMD / PowerShell)
 ```cmd
 cmd /c "opencode run --agent plan -m opencode/deepseek-v4.1-flash-free#high --auto \"<任務提示詞>\" < nul"
 ```
 
+### 2. Linux / macOS (Bash / Zsh)
+```bash
+opencode run --agent plan -m opencode/deepseek-v4.1-flash-free#high --auto "<任務提示詞>" < /dev/null
+```
+
+### 核心參數解析：
 - `--agent plan`：**【核心唯讀鎖定】** 強制指定 OpenCode 內建的 Plan 規劃模式，從底層沒收所有檔案修改工具，保證子代理絕不變更或覆寫任何專案檔案。
 - `--auto`：自動確認所有非高危操作，避免在無人值守時跳出互動提示而停滯。
-- `< nul`：強制導向空輸入，確保 stdin 立即傳送 EOF 信號，不卡死背景執行緒。
+- `< nul` / `< /dev/null`：強制導向空輸入，確保 stdin 立即傳送 EOF 信號，不卡死背景執行緒。
+
+---
 
 ## 子代理數量與派工規範（動態工作池 Worker Pool：線上最多 3 個）
 
@@ -34,7 +43,9 @@ cmd /c "opencode run --agent plan -m opencode/deepseek-v4.1-flash-free#high --au
   1. **階梯式錯峰啟動**：多個任務同時發起時，**各進程啟動間隔 5～10 秒**，避免在同一微秒向 API 端點發出連線衝擊（防 Burst Rate Limit）。
   2. **線上並行上限 3 個（Concurrency Limit = 3）**：在背景同時運行的子代理**最多維持 3 個**，確保端點連線池穩定與本機資源健康。
   3. **動態遞補（Sliding Window）**：當線上任一子代理完成執行並退出後，**立即自動補上隊列中的下一個子代理**，直到所有子代理全數完成。
-  4. **非同步背景收集**：各子代理在背景執行並將審查結果獨立輸出至暫存檔，全數完成後由主代理一次收斂並彙整回報。
+  4. **非同步背景收集與收網**：各子代理在背景執行並將審查結果獨立輸出至系統臨時目錄（如 `$env:TEMP\opencode_review_*.txt` 或 `/tmp/opencode_review_*.txt`，避免在專案根目錄產生暫存垃圾），全數完成後由主代理一次收斂並彙整回報。
+
+---
 
 ## 模型選用指引
 
@@ -48,6 +59,8 @@ cmd /c "opencode run --agent plan -m opencode/deepseek-v4.1-flash-free#high --au
    - 使用者可視需要指定其他模型（例如本機 Ollama、GLM Free 或其他已配置的推論引擎）。
 3. **管制機環境限制**：
    - 在公司內部管制機（`controlled`）上，因外網受限，**嚴禁調用需要未授權外部網路連線的 API（例如 OpenRouter 等）**，僅可使用本機或核准之網路通道。
+
+---
 
 ## 任務提示詞最佳實踐
 

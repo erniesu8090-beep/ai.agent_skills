@@ -1,6 +1,6 @@
 ---
 name: gemini-web-imagegen
-description: 使用個人 gemini.google.com 網頁版 Cookie 額度（免 API Key、零 API 費用）在任何專案中生成 2K AI 圖片或進行參考圖風格改圖（Image-to-Image）。當使用者提到「用 Gemini 網頁版生圖」、「用 Gemini Web 生圖」、「用 Cookie 額度生圖」，或當 Codex ($imagegen) 與 Antigravity 內建生圖觸發 429 配額上限時作為第三優先備援載入。
+description: 使用個人 gemini.google.com 網頁版 Cookie 額度（免 API Key、零 API 費用）在任何專案中生成 2K AI 圖片或進行參考圖風格改圖（Image-to-Image）。當使用者提到「用 Gemini 網頁版生圖」、「用 Gemini Web 生圖」、「用 Cookie 額度生圖」，或當 Codex ($imagegen) 與 Antigravity 內建生圖觸發 429 配額上限時作為備援載入。若使用者需要文字問答、代碼生成、影片生成或 SVG 向量圖時請勿載入。
 ---
 
 # Gemini Web 網頁版免費額度生圖橋接 (Gemini Web Imagegen Bridge)
@@ -14,23 +14,24 @@ description: 使用個人 gemini.google.com 網頁版 Cookie 額度（免 API Ke
 
 ## 前置環境與自動探索
 
-本技能隨附獨立執行腳本 `scripts/gemini_web_gen.py`。執行時優先使用已安裝 `gemini-webapi>=2.1.1` 與 `pillow>=10.0.0` 的虛擬環境（如當前專案 `.venv` 或「作圖風格」專案的 `.venv`），若均無則自動於 `~/.gemini/webapi_venv` 建立共用輕量虛擬環境。
+本技能隨附獨立執行腳本 `scripts/gemini_web_gen.py`。執行時優先使用當前專案 `.venv` 或共用之 `~/.gemini/webapi_venv` 輕量虛擬環境。
 
 PowerShell 通用執行起手式：
 ```powershell
-# 1. 定位技能腳本路徑（相容四大 Agent 全域技能目錄）
+# 1. 定位技能腳本路徑（優先檢查專案本體，再回退至全域目錄）
 $skillScript = @(
+    (Join-Path (Get-Location) ".agents\skills\gemini-web-imagegen\scripts\gemini_web_gen.py"),
+    (Join-Path (Get-Location) "scripts\gemini_web_gen.py"),
     "$HOME\.gemini\config\skills\gemini-web-imagegen\scripts\gemini_web_gen.py",
     "$HOME\.claude\skills\gemini-web-imagegen\scripts\gemini_web_gen.py",
-    "$HOME\.codex\skills\gemini-web-imagegen\scripts\gemini_web_gen.py",
     "$HOME\.config\opencode\skills\gemini-web-imagegen\scripts\gemini_web_gen.py"
 ) | Where-Object { Test-Path $_ } | Select-Object -First 1
 
-# 2. 尋找已裝妥 gemini-webapi 的 Python 環境，若無則初始化 ~/.gemini/webapi_venv
+if (-not $skillScript) { throw "找不到 gemini_web_gen.py 腳本，請確認技能已安裝於專案或全域目錄。" }
+
+# 2. 尋找已裝妥 gemini-webapi 的 Python 環境，若無則自動初始化 ~/.gemini/webapi_venv
 $pyExe = @(
-    "$PWD\.venv\Scripts\python.exe",
-    "$HOME\Documents\AI AGENT 工作區\專案完成區\文書\作圖風格\.venv\Scripts\python.exe",
-    "D:\AI_Workspace\專案完成區\文書\作圖風格\.venv\Scripts\python.exe",
+    (Join-Path (Get-Location) ".venv\Scripts\python.exe"),
     "$HOME\.gemini\webapi_venv\Scripts\python.exe"
 ) | Where-Object { Test-Path $_ } | Select-Object -First 1
 

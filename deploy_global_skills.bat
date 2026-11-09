@@ -6,11 +6,15 @@ cd /d "%~dp0"
 
 for /f %%i in ('powershell -NoProfile -Command "Get-Date -Format yyyyMMdd_HHmmss"') do set "TS=%%i"
 
-echo [DEPLOY] Deploying global skills (opencode-runner)...
+echo [DEPLOY] Deploying global skills (opencode-runner, frontend-design)...
 
 call :deploy_skill "opencode-runner" "%USERPROFILE%\.claude\skills\opencode-runner" || goto :fail
 call :deploy_skill "opencode-runner" "%USERPROFILE%\.gemini\config\skills\opencode-runner" || goto :fail
 call :deploy_skill "opencode-runner" "%USERPROFILE%\.config\opencode\skills\opencode-runner" || goto :fail
+
+call :deploy_skill "frontend-design" "%USERPROFILE%\.claude\skills\frontend-design" || goto :fail
+call :deploy_skill "frontend-design" "%USERPROFILE%\.gemini\config\skills\frontend-design" || goto :fail
+call :deploy_skill "frontend-design" "%USERPROFILE%\.config\opencode\skills\frontend-design" || goto :fail
 
 echo.
 echo [DONE] Global skills deployed successfully.
@@ -43,6 +47,10 @@ if exist "%DST_FILE%" (
 ) else (
     copy /y "%SRC_FILE%" "%DST_FILE%" >nul || exit /b 1
     echo [OK] %DST_FILE%
+)
+
+if exist "%CD%\global\%SKILL_NAME%\LICENSE.txt" (
+    copy /y "%CD%\global\%SKILL_NAME%\LICENSE.txt" "%TARGET_DIR%\LICENSE.txt" >nul 2>&1
 )
 exit /b 0
 

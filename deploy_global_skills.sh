@@ -22,21 +22,31 @@ deploy_skill() {
     if [ -f "$dst_file" ]; then
         if cmp -s "$src_file" "$dst_file"; then
             echo "[SKIP] $dst_file 已是最新"
-            return 0
+        else
+            cp "$dst_file" "$dst_file.$ts.bak"
+            echo "[BACKUP] $dst_file.$ts.bak"
+            cp "$src_file" "$dst_file"
+            echo "[OK] $dst_file"
         fi
-        cp "$dst_file" "$dst_file.$ts.bak"
-        echo "[BACKUP] $dst_file.$ts.bak"
+    else
+        cp "$src_file" "$dst_file"
+        echo "[OK] $dst_file"
     fi
 
-    cp "$src_file" "$dst_file"
-    echo "[OK] $dst_file"
+    if [ -f "$(pwd)/global/$skill_name/LICENSE.txt" ]; then
+        cp "$(pwd)/global/$skill_name/LICENSE.txt" "$target_dir/LICENSE.txt"
+    fi
 }
 
-echo "[DEPLOY] 正在部署全域技能 (opencode-runner)..."
+echo "[DEPLOY] 正在部署全域技能 (opencode-runner, frontend-design)..."
 
 deploy_skill "opencode-runner" "$HOME/.claude/skills/opencode-runner"
 deploy_skill "opencode-runner" "$HOME/.gemini/config/skills/opencode-runner"
 deploy_skill "opencode-runner" "$HOME/.config/opencode/skills/opencode-runner"
+
+deploy_skill "frontend-design" "$HOME/.claude/skills/frontend-design"
+deploy_skill "frontend-design" "$HOME/.gemini/config/skills/frontend-design"
+deploy_skill "frontend-design" "$HOME/.config/opencode/skills/frontend-design"
 
 echo ""
 echo "[DONE] 全域技能部署完成。"
