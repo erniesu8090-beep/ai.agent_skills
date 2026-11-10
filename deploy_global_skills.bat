@@ -1,20 +1,22 @@
 @echo off
 rem Deploy global skills from ai.agent_skills to all agent global skill directories
-rem ASCII only. Supports Claude Code, Antigravity, and OpenCode.
+rem ASCII only. Supports Claude Code, Antigravity, Codex, and OpenCode.
 setlocal enabledelayedexpansion
 cd /d "%~dp0"
 
 for /f %%i in ('powershell -NoProfile -Command "Get-Date -Format yyyyMMdd_HHmmss"') do set "TS=%%i"
 
-echo [DEPLOY] Deploying global skills (opencode-runner, frontend-design)...
+echo [DEPLOY] Deploying global skills (opencode-runner)...
 
 call :deploy_skill "opencode-runner" "%USERPROFILE%\.claude\skills\opencode-runner" || goto :fail
 call :deploy_skill "opencode-runner" "%USERPROFILE%\.gemini\config\skills\opencode-runner" || goto :fail
+call :deploy_skill "opencode-runner" "%USERPROFILE%\.codex\skills\opencode-runner" || goto :fail
 call :deploy_skill "opencode-runner" "%USERPROFILE%\.config\opencode\skills\opencode-runner" || goto :fail
 
-call :deploy_skill "frontend-design" "%USERPROFILE%\.claude\skills\frontend-design" || goto :fail
-call :deploy_skill "frontend-design" "%USERPROFILE%\.gemini\config\skills\frontend-design" || goto :fail
-call :deploy_skill "frontend-design" "%USERPROFILE%\.config\opencode\skills\frontend-design" || goto :fail
+call :remove_deprecated_skill "%USERPROFILE%\.claude\skills\frontend-design"
+call :remove_deprecated_skill "%USERPROFILE%\.gemini\config\skills\frontend-design"
+call :remove_deprecated_skill "%USERPROFILE%\.codex\skills\frontend-design"
+call :remove_deprecated_skill "%USERPROFILE%\.config\opencode\skills\frontend-design"
 
 echo.
 echo [DONE] Global skills deployed successfully.
@@ -51,6 +53,14 @@ if exist "%DST_FILE%" (
 
 if exist "%CD%\global\%SKILL_NAME%\LICENSE.txt" (
     copy /y "%CD%\global\%SKILL_NAME%\LICENSE.txt" "%TARGET_DIR%\LICENSE.txt" >nul 2>&1
+)
+exit /b 0
+
+:remove_deprecated_skill
+set "DEP_DIR=%~1"
+if exist "%DEP_DIR%" (
+    rmdir /s /q "%DEP_DIR%" >nul 2>&1
+    echo [REMOVED] %DEP_DIR%
 )
 exit /b 0
 

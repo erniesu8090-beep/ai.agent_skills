@@ -6,7 +6,7 @@
 ## 專案用途
 
 各 AI Agent（Claude Code、Antigravity、OpenCode）的技能母本庫（與 `ai.agent_rules` 規則母本庫對稱）。
-集中維護全域技能母本（`global/opencode-runner`、`global/frontend-design`）與專案備用技能母本（`project/` 生圖、影音等），供跨專案複用與部署。
+集中維護全域技能母本（`global/opencode-runner`）與專案備用技能母本（`project/` 辦公文檔、前端GUI套件、生圖、影音等），供跨專案複用與部署。
 
 ## 目標執行環境
 

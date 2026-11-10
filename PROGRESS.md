@@ -7,27 +7,29 @@
 
 **維護中**。
 
-- 最後一次 commit：`acd8fc6`（建立 global 與 project 二分目錄並同步相關設定與腳本）
+- 最後一次 commit：`7af538f`（新增 Gemini 官方 App 技能安裝指引與白名單規範說明）
 
 已完成：
 
 1. 建立 Git 倉庫、`AGENTS.md`、`README.md`。
 2. 收納三大共用技能：`gemini-web-imagegen`、`google-flow-bridge`、`opencode-runner`。
 3. 全面清點本機（住家開發機 home）全域、外掛與各專案技能安裝位置與清冊。
-4. 確立二分架構（全域 `opencode-runner`、`frontend-design`；多媒體與辦公技能保留為專案備用庫）。
+4. 確立二分架構（全域唯一 `opencode-runner`；多媒體、辦公與前端排版技能保留為專案備用庫）。
 5. 與 `ai.agent_rules` 徹底獨立解耦：`ai.agent_rules` 刪除 `templates/skills/` 與部署邏輯；建立本倉庫之 `deploy_global_skills.bat` 與 `deploy_global_skills.sh`，通過三大全域目錄部署驗證。
-6. 收納 Anthropic 官方 `frontend-design`（前端 UI/UX 美學與反樣板規範）至 `global/frontend-design/`，擴展部署腳本一鍵同步至三大 Agent 全域目錄。
-7. 收納 Anthropic 官方文檔四件套（`xlsx`、`pdf`、`docx`、`pptx`）與 `skill-creator` 至 `project/` 專案備用母本庫，作為跨專案調用與進階辦公/技能開發範本。
-8. 清理專案根目錄搬移殘留之 `gemini-web-imagegen` 快取資料夾，確保倉庫結構嚴格遵循 `global/` 與 `project/` 二分規範。
-9. 為本專案 `ai.agent_skills` 安裝 `.agents/skills/skill-creator`，作為本倉庫開發、優化與評測 Agent 技能之常駐專案技能。
-10. 將辦公文檔四件套（Word、Excel、PPT、PDF）重構合併為單一聚合技能 project/document-skills/，採 Router 架構分流與共用 scripts/office/ 去重，並安全移除原分散目錄。
+6. 收納 Anthropic 官方文檔四件套（`xlsx`、`pdf`、`docx`、`pptx`）與 `skill-creator` 至 `project/` 專案備用母本庫，作為跨專案調用與進階辦公/技能開發範本。
+7. 清理專案根目錄搬移殘留之快取資料夾，確保倉庫結構嚴格遵循 `global/` 與 `project/` 二分規範。
+8. 為本專案 `ai.agent_skills` 安裝 `.agents/skills/skill-creator`，作為本倉庫開發、優化與評測 Agent 技能之常駐專案技能。
+9. 將辦公文檔四件套（Word、Excel、PPT、PDF）重構合併為單一聚合技能 `project/document-skills/`，採 Router 架構分流與共用 `scripts/office/` 去重，並安全移除原分散目錄。
+10. 依據 `/skill-creator` 標準將前端 GUI 美學四件套（`frontend-design`、`theme-factory`、`web-artifacts-builder`、`webapp-testing`）重構合併為單一聚合技能 `project/frontend-suite/`，採四本柱 Router 架構分流與資源整合。
+11. 移除 `global/frontend-design/` 並移入 `_pending_delete_/`，更新 `deploy_global_skills.bat` / `.sh`，加入自動清理各 Agent 下線技能邏輯，全域技能收斂為唯一之 `opencode-runner`。
+12. 將 Web 3D 檢視器技能 `threejs` 自 `ai.agent_rules` 遷入 `project/threejs/` 作為專案備用母本，補齊雙庫解耦與 README 技能清單（2026-11-10）。
 
 ## 二、使用者已確認的事
 
 - **技能架構定案為二分法**：只區分「全域技能（Global）」與「專案專屬技能（Project-specific）」，不設中間領域層（2026-11-08 使用者確認）。
 - **母本庫對稱定位**：本倉庫定位為各 AI Agent 的**技能母本庫**，與 `ai.agent_rules` 規則母本庫功能完全對稱；兩者各自獨立無相依（2026-11-08 使用者確認）。
-- **全域技能收納項**：收納 `opencode-runner`（跨引擎唯讀審查規範）與 `frontend-design`（前端 UI/UX 美學與反樣板規範）。全域真實維護母本定於 `ai.agent_skills\global\`。
-- **專案備用技能處置**：生圖/影音（`gemini-web-imagegen`、`google-flow-bridge`）、辦公文檔四件套（`xlsx`、`pdf`、`docx`、`pptx`）與 `skill-creator` 確認屬專案專屬性質（非全域），保留在 `ai.agent_skills\project\` 作為備用與共用範本庫，待未來特定專案需要時再複製進該專案的 `.agents/skills/`（2026-11-08 及 2026-11-10 使用者確認）。
+- **全域技能收納項**：收納 `opencode-runner`（跨引擎唯讀審查規範）。全域真實維護母本定於 `ai.agent_skills\global\`。原 `frontend-design` 依使用者需求改為併入專案備用之 `project/frontend-suite/` 按需載入（2026-11-10 使用者確認）。
+- **專案備用技能處置**：前端 GUI 美學全功能套件（`frontend-suite`）、辦公文檔四件套（`document-skills`）、技能製作評測（`skill-creator`）、生圖/影音（`gemini-web-imagegen`、`google-flow-bridge`）確認屬專案專屬性質（非全域），保留在 `ai.agent_skills\project\` 作為備用與共用範本庫，待未來特定專案需要時再複製進該專案的 `.agents/skills/`（2026-11-08 及 2026-11-10 使用者確認）。
 - **專案專屬技能部署原則**：隨專案各自的 Git 倉庫版本控管與同步，免額外安裝腳本或全域設定。
 
 ## 三、待使用者決定（下次討論從這裡開始）
@@ -38,13 +40,13 @@
 
 ### 1. 三大 AI Agent 全域技能安裝位置（User Global Skills）
 
-三大 Agent 在本機的使用者全域技能目錄均已實測定位，目前均已安裝 `opencode-runner`、`frontend-design`：
+三大 Agent 在本機的使用者全域技能目錄均已實測定位，目前均已安裝 `opencode-runner`：
 
 | Agent | 全域技能安裝目錄 | 目前已安裝技能 | 說明 |
 |---|---|---|---|
-| **Antigravity** | `C:\Users\jagger\.gemini\config\skills\` | `opencode-runner`、`frontend-design` | Antigravity 全域自訂技能目錄 |
-| **Claude Code** | `C:\Users\jagger\.claude\skills\` | `opencode-runner`、`frontend-design` | Claude Code 全域技能目錄 |
-| **OpenCode** | `C:\Users\jagger\.config\opencode\skills\` | `opencode-runner`、`frontend-design` | OpenCode 全域技能目錄 |
+| **Antigravity** | `C:\Users\jagger\.gemini\config\skills\` | `opencode-runner` | Antigravity 全域自訂技能目錄 |
+| **Claude Code** | `C:\Users\jagger\.claude\skills\` | `opencode-runner` | Claude Code 全域技能目錄 |
+| **OpenCode** | `C:\Users\jagger\.config\opencode\skills\` | `opencode-runner` | OpenCode 全域技能目錄 |
 
 ---
 
@@ -88,7 +90,7 @@
 | 倉庫路徑 | 技能名稱 | 來源 | 說明 |
 |---|---|---|---|
 | D:\AI_Workspace\ai.agent_skills\global\opencode-runner | opencode-runner | 自訂 | 調用 OpenCode CLI 唯讀審查與比對規範（全域技能母本，開發機與管制機通用） |
-| D:\AI_Workspace\ai.agent_skills\global\frontend-design | frontend-design | Anthropic 官方 | 消除 AI 樣板感，提供現代高質感 Web UI/UX 設計指引、色彩約束、字體階層與微動效規範 |
+| D:\AI_Workspace\ai.agent_skills\project\frontend-suite | frontend-suite | Anthropic 官方 | 前端 GUI 排版與設計全功能四合一套件（涵蓋美學防套版、10款主題色票、React+shadcn單檔打包、Playwright截圖驗證） |
 | D:\AI_Workspace\ai.agent_skills\project\document-skills | document-skills | Anthropic 官方 | Office 與 PDF 全功能處理套件（Word 排版、Excel recalc 重算、PPT 生成、PDF 提取填表） |
 | D:\AI_Workspace\ai.agent_skills\project\skill-creator | skill-creator | Anthropic 官方 | 建立、優化、評測與除錯 Agent Skills 的標準指引與評估工具（專案備用母本） |
 | D:\AI_Workspace\ai.agent_skills\project\gemini-web-imagegen | gemini-web-imagegen | 自訂 | 免 API 金鑰 2K AI 生圖與圖生圖工具（專案備用母本，需要時放入特定專案） |
@@ -117,7 +119,7 @@
 ## 五、試過但無效的做法（接手者不要重複）
 
 - （尚無無效記錄）
-- 最後一個正常運作的 commit：`acd8fc6`
+- 最後一個正常運作的 commit：`7af538f`
 
 ## 六、下一步
 
@@ -148,3 +150,4 @@
 | 2026-11-10 | 住家開發機 | 依據 /skill-creator 標準完成三大自訂技能（google-flow-bridge、gemini-web-imagegen、opencode-runner）之安全去識別化、路徑泛化、觸發描述打磨，並將部署腳本更名為 deploy_global_skills 且通過全域同步部署驗證 |
 | 2026-11-10 | 住家開發機 | 將辦公文檔四件套合併為單一聚合技能 project/document-skills，去重共用 office 模組並通過全數 26 個腳本編譯與驗證 |
 | 2026-11-10 | 住家開發機 | 查證 Google 官方最新 Gems to Skills 轉型規範，於 README.md 增補上傳資料夾至 Gemini 官方網頁/App 之完整操作步驟 |
+| 2026-11-10 | 公司開發機 | 依據 /skill-creator 標準將前端美學四件套合併為單一聚合技能 project/frontend-suite/，採四本柱 Router 架構；移除 global/frontend-design/ 並更新部署腳本為僅部署 opencode-runner |

@@ -21,6 +21,7 @@ logs/
 
 # 開發暫存
 scratch/
+_pending_delete_/
 
 # 備份（覆寫前的備份、逆向專案的原版備份）
 backup/

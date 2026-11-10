@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 # Deploy global skills from ai.agent_skills to all agent global skill directories
-# Supports Claude Code, Antigravity, and OpenCode.
+# Supports Claude Code, Antigravity, Codex, and OpenCode.
 set -e
 cd "$(dirname "$0")"
 
@@ -38,15 +38,20 @@ deploy_skill() {
     fi
 }
 
-echo "[DEPLOY] 正在部署全域技能 (opencode-runner, frontend-design)..."
+echo "[DEPLOY] 正在部署全域技能 (opencode-runner)..."
 
 deploy_skill "opencode-runner" "$HOME/.claude/skills/opencode-runner"
 deploy_skill "opencode-runner" "$HOME/.gemini/config/skills/opencode-runner"
+deploy_skill "opencode-runner" "$HOME/.codex/skills/opencode-runner"
 deploy_skill "opencode-runner" "$HOME/.config/opencode/skills/opencode-runner"
 
-deploy_skill "frontend-design" "$HOME/.claude/skills/frontend-design"
-deploy_skill "frontend-design" "$HOME/.gemini/config/skills/frontend-design"
-deploy_skill "frontend-design" "$HOME/.config/opencode/skills/frontend-design"
+# 移除已下線的全域技能
+for dep_dir in "$HOME/.claude/skills/frontend-design" "$HOME/.gemini/config/skills/frontend-design" "$HOME/.codex/skills/frontend-design" "$HOME/.config/opencode/skills/frontend-design"; do
+    if [ -d "$dep_dir" ]; then
+        rm -rf "$dep_dir"
+        echo "[REMOVED] $dep_dir"
+    fi
+done
 
 echo ""
 echo "[DONE] 全域技能部署完成。"
