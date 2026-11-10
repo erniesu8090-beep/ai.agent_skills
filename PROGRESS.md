@@ -7,7 +7,7 @@
 
 **維護中**。
 
-- 最後一次 commit：`7af538f`（新增 Gemini 官方 App 技能安裝指引與白名單規範說明）
+- 最後一次 commit：`3f2e2fd`（收納 OpenAI 官方精選三合一技能 cli-creator, gh-fix-ci, jupyter-notebook）
 
 已完成：
 
