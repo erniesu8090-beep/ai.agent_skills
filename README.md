@@ -15,7 +15,7 @@
 | 技能分類 | 範圍與生命週期 | 存放與部署方式 | 收錄技能 |
 |---|---|---|---|
 | **全域技能 (Global)** | 跨所有專案通用、所有 Agent 隨時調用的規範與核心能力。 | 由本倉庫一鍵部署至使用者全域目錄：<br>• `~/.claude/skills/`<br>• `~/.gemini/config/skills/`<br>• `~/.config/opencode/skills/` | • `global/opencode-runner/` |
-| **專案專屬技能 (Project-specific)** | 僅特定業務專案會用到的專用工具與流程母本。 | 平時於本倉庫作為**備用範本**；當特定專案需要時，複製至該專案的 `.agents/skills/` 內隨專案 Git 倉庫版控。 | • `project/frontend-suite/`<br>• `project/document-skills/`<br>• `project/skill-creator/`<br>• `project/gemini-web-imagegen/`<br>• `project/google-flow-bridge/`<br>• `project/threejs/` |
+| **專案專屬技能 (Project-specific)** | 僅特定業務專案會用到的專用工具與流程母本。 | 平時於本倉庫作為**備用範本**；當特定專案需要時，複製至該專案的 `.agents/skills/` 內隨專案 Git 倉庫版控。 | • `project/frontend-suite/`<br>• `project/document-skills/`<br>• `project/skill-creator/`<br>• `project/cli-creator/`<br>• `project/gh-fix-ci/`<br>• `project/jupyter-notebook/`<br>• `project/gemini-web-imagegen/`<br>• `project/google-flow-bridge/`<br>• `project/threejs/` |
 
 ---
 
@@ -26,6 +26,9 @@
 | `global/opencode-runner/` | OpenCode CLI Runner | 全域技能 | 自訂 | 提供 OpenCode 子代理唯讀審查（`--agent plan`）、防卡死調用（`< nul`）與動態工作池安全規範。 |
 | `project/frontend-suite/` | Frontend Suite (UI/UX, Theming & Testing) | 專案備用 | Anthropic 官方 | 前端 GUI 排版與設計全功能四合一套件：涵蓋前端美學與反樣板感（frontend-design）、10 款主題與色票生成（theme-factory）、React 18 + shadcn 工程化打包（web-artifacts-builder）、Playwright 截圖排版驗證（webapp-testing）。 |
 | `project/document-skills/` | Document Skills Suite (Office & PDF) | 專案備用 | Anthropic 官方 | Office 與 PDF 全功能處理套件：涵蓋 Word 排版、Excel 試算表與 recalc 公式重算、PPT 投影片生成、PDF 提取與表單填寫。 |
+| project/cli-creator/ | CLI Creator | 專案備用 | OpenAI 官方 | 建立高品質、可由命令行直接調用、輸出穩定 JSON、具備良好錯誤代碼與伴生 Skill 的標準化 CLI 工具。 |
+| project/gh-fix-ci/ | GitHub PR Checks & CI Fixer | 專案備用 | OpenAI 官方 | 排查並修復 GitHub Actions 失敗的 PR checks，自動提取錯誤日誌摘要、擬定修復計畫並驗證。 |
+| project/jupyter-notebook/ | Jupyter Notebook Scaffold & Patterns | 專案備用 | OpenAI 官方 | 建立、鷹架生成或編輯 Jupyter 筆記本（.ipynb），提供實驗分析與教學導向標準範本，避免手刻 JSON 損壞。 |
 | `project/skill-creator/` | Agent Skill Creator & Evaluator | 專案備用 | Anthropic 官方 | 建立、優化、評測與除錯 Agent Skills 的標準指引與評估工具。 |
 | `project/gemini-web-imagegen/` | Gemini Web Image Generator CLI | 專案備用 | 自訂 | 沿用 gemini.google.com 網頁登入額度的免 API 金鑰 2K 生圖與圖生圖工具（需要時放入專案）。 |
 | `project/google-flow-bridge/` | Google Flow Bridge | 專案備用 | 自訂 | 自動化調用 Google Flow 生成 Nano Banana 2K 圖片或 Veo MP4 影片（需要時放入專案）。 |
@@ -33,6 +36,7 @@
 
 > **來源說明**：
 > - **Anthropic 官方**：引用自 Anthropic 官方開源技能庫 [`anthropics/skills`](https://github.com/anthropics/skills)。
+> - **OpenAI 官方**：引用自 OpenAI 官方開源技能庫 [openai/skills](https://github.com/openai/skills)。
 > - **自訂**：本工作區依特定工作流或跨引擎需求自研之專案與全域規範。
 
 ---

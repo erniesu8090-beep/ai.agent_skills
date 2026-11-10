@@ -93,10 +93,14 @@
 | D:\AI_Workspace\ai.agent_skills\project\frontend-suite | frontend-suite | Anthropic 官方 | 前端 GUI 排版與設計全功能四合一套件（涵蓋美學防套版、10款主題色票、React+shadcn單檔打包、Playwright截圖驗證） |
 | D:\AI_Workspace\ai.agent_skills\project\document-skills | document-skills | Anthropic 官方 | Office 與 PDF 全功能處理套件（Word 排版、Excel recalc 重算、PPT 生成、PDF 提取填表） |
 | D:\AI_Workspace\ai.agent_skills\project\skill-creator | skill-creator | Anthropic 官方 | 建立、優化、評測與除錯 Agent Skills 的標準指引與評估工具（專案備用母本） |
+| D:\AI_Workspace\ai.agent_skills\project\cli-creator | cli-creator | OpenAI 官方 | 建立高品質、可由命令行直接調用、輸出穩定 JSON、具備良好錯誤代碼與伴生 Skill 的標準化 CLI 工具 |
+| D:\AI_Workspace\ai.agent_skills\project\gh-fix-ci | gh-fix-ci | OpenAI 官方 | 排查並修復 GitHub Actions 失敗的 PR checks，自動提取錯誤日誌摘要、擬定修復計畫並驗證 |
+| D:\AI_Workspace\ai.agent_skills\project\jupyter-notebook | jupyter-notebook | OpenAI 官方 | 建立、鷹架生成或編輯 Jupyter 筆記本（.ipynb），提供實驗分析與教學導向標準範本，避免手刻 JSON 損壞 |
 | D:\AI_Workspace\ai.agent_skills\project\gemini-web-imagegen | gemini-web-imagegen | 自訂 | 免 API 金鑰 2K AI 生圖與圖生圖工具（專案備用母本，需要時放入特定專案） |
 | D:\AI_Workspace\ai.agent_skills\project\google-flow-bridge | google-flow-bridge | 自訂 | 免 API 金鑰調用 Google Flow 生成 2K 圖片或 Veo 影片（專案備用母本，需要時放入特定專案） |
 
 > 註：標示「Anthropic 官方」者引用自官方開源庫 [anthropics/skills](https://github.com/anthropics/skills)。
+> 註：標示「OpenAI 官方」者引用自官方開源庫 [openai/skills](https://github.com/openai/skills)。
 
 ---
 
@@ -151,3 +155,4 @@
 | 2026-11-10 | 住家開發機 | 將辦公文檔四件套合併為單一聚合技能 project/document-skills，去重共用 office 模組並通過全數 26 個腳本編譯與驗證 |
 | 2026-11-10 | 住家開發機 | 查證 Google 官方最新 Gems to Skills 轉型規範，於 README.md 增補上傳資料夾至 Gemini 官方網頁/App 之完整操作步驟 |
 | 2026-11-10 | 公司開發機 | 依據 /skill-creator 標準將前端美學四件套合併為單一聚合技能 project/frontend-suite/，採四本柱 Router 架構；移除 global/frontend-design/ 並更新部署腳本為僅部署 opencode-runner |
+| 2026-11-10 | 住家開發機 | 調研 OpenAI 官方技能庫 openai/skills，收納 cli-creator、gh-fix-ci 與 jupyter-notebook 至 project/ 專案備用庫，完成多 Agent 中立化改寫與自動化驗證 |
