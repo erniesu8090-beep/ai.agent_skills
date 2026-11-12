@@ -1,6 +1,6 @@
 # PROGRESS　進度與交接
 
-> 最後更新：2026-11-10（住家開發機）
+> 最後更新：2026-11-12（管制機）
 > 新對話接手：先讀 `AGENTS.md` → 本檔
 
 ## 一、目前階段
@@ -23,9 +23,11 @@
 10. 依據 `/skill-creator` 標準將前端 GUI 美學四件套（`frontend-design`、`theme-factory`、`web-artifacts-builder`、`webapp-testing`）重構合併為單一聚合技能 `project/frontend-suite/`，採四本柱 Router 架構分流與資源整合。
 11. 移除 `global/frontend-design/` 並移入 `_pending_delete_/`，更新 `deploy_global_skills.bat` / `.sh`，加入自動清理各 Agent 下線技能邏輯，全域技能收斂為唯一之 `opencode-runner`。
 12. 將 Web 3D 檢視器技能 `threejs` 自 `ai.agent_rules` 遷入 `project/threejs/` 作為專案備用母本，補齊雙庫解耦與 README 技能清單（2026-11-10）。
+13. 前端 UI「去 AI 樣板味」美學規範入全域規則（2026-11-12）：經使用者確認採「美學規範入全域規則，重型套件留專案備用」架構，將「暖米白底色、石墨炭灰、機能邊條編碼、克制圓角」等反 AI 樣板原則寫入 `ai.agent_rules/global_rules.md` 第 7 節並完成全域派發；`project/frontend-suite/` 完整 React+shadcn+Playwright 套件則維持專案備用庫按需取用。
 
 ## 二、使用者已確認的事
 
+- **前端 UI「去 AI 味」採美學入全域規則、重型套件留專案架構（2026-11-12 使用者確認）**：使用者重視介面視覺去 AI 樣板感（避免科技深藍、純白與紫藍漸層，偏好大林煉油廠儀表板式之暖米白底色、石墨深炭灰與機能性邊條）。定案將該核心美學與色票規範寫入 `ai.agent_rules` 全域規則，使所有 Agent 在任何專案或隨手寫 HTML 時皆能零額外 Token 負擔直覺套用；而具備 Vite、shadcn/ui 與 Playwright 之完整大型套件 `project/frontend-suite/` 仍維持專案專屬備用庫。
 - **技能架構定案為二分法**：只區分「全域技能（Global）」與「專案專屬技能（Project-specific）」，不設中間領域層（2026-11-08 使用者確認）。
 - **母本庫對稱定位**：本倉庫定位為各 AI Agent 的**技能母本庫**，與 `ai.agent_rules` 規則母本庫功能完全對稱；兩者各自獨立無相依（2026-11-08 使用者確認）。
 - **全域技能收納項**：收納 `opencode-runner`（跨引擎唯讀審查規範）。全域真實維護母本定於 `ai.agent_skills\global\`。原 `frontend-design` 依使用者需求改為併入專案備用之 `project/frontend-suite/` 按需載入（2026-11-10 使用者確認）。
@@ -156,3 +158,4 @@
 | 2026-11-10 | 住家開發機 | 查證 Google 官方最新 Gems to Skills 轉型規範，於 README.md 增補上傳資料夾至 Gemini 官方網頁/App 之完整操作步驟 |
 | 2026-11-10 | 公司開發機 | 依據 /skill-creator 標準將前端美學四件套合併為單一聚合技能 project/frontend-suite/，採四本柱 Router 架構；移除 global/frontend-design/ 並更新部署腳本為僅部署 opencode-runner |
 | 2026-11-10 | 住家開發機 | 調研 OpenAI 官方技能庫 openai/skills，收納 cli-creator、gh-fix-ci 與 jupyter-notebook 至 project/ 專案備用庫，完成多 Agent 中立化改寫與自動化驗證 |
+| 2026-11-12 | 管制機 | 前端 UI 採「美學規範入全域規則，重型套件留專案備用」架構，將暖米底色、石墨炭灰與反套版原則寫入 global_rules.md 並完成三大 Agent 全域派發 |
