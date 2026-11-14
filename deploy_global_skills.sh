@@ -54,12 +54,18 @@ deploy_skill() {
     fi
 }
 
-echo "[DEPLOY] 正在部署全域技能 (opencode-runner, system-remnant-audit)..."
+echo "[DEPLOY] 正在部署全域技能 (opencode-runner, system-remnant-audit, codex-imagegen-bridge)..."
 
 for skill_name in opencode-runner system-remnant-audit; do
     deploy_skill "$skill_name" "$HOME/.claude/skills/$skill_name"
     deploy_skill "$skill_name" "$HOME/.gemini/config/skills/$skill_name"
     deploy_skill "$skill_name" "$HOME/.codex/skills/$skill_name"
+    deploy_skill "$skill_name" "$HOME/.config/opencode/skills/$skill_name"
+done
+
+for skill_name in codex-imagegen-bridge; do
+    deploy_skill "$skill_name" "$HOME/.claude/skills/$skill_name"
+    deploy_skill "$skill_name" "$HOME/.gemini/config/skills/$skill_name"
     deploy_skill "$skill_name" "$HOME/.config/opencode/skills/$skill_name"
 done
 

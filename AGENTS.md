@@ -6,7 +6,7 @@
 ## 專案用途
 
 各 AI Agent（Claude Code、Antigravity、OpenCode）的技能母本庫（與 `ai.agent_rules` 規則母本庫對稱）。
-集中維護全域技能母本（`global/opencode-runner`、`global/system-remnant-audit`）與專案備用技能母本（`project/` 辦公文檔、前端GUI套件、生圖、影音等），供跨專案複用與部署。
+集中維護全域技能母本（`global/opencode-runner`、`global/system-remnant-audit`、`global/codex-imagegen-bridge`）與專案備用技能母本（`project/` 辦公文檔、前端GUI套件、生圖、影音等），供跨專案複用與部署。
 
 ## 目標執行環境
 
@@ -23,11 +23,11 @@
 
 ## 不可更動的部分
 
-- 現有技能對外規範的呼叫參數與安全旗標（如 OpenCode 的 `--agent plan`、`--auto`、`< nul` 等防護規範）不可隨意刪改。
+- 現有技能對外規範的呼叫參數與安全旗標（如 OpenCode 的 `--agent plan`、`--auto`、`< nul`，以及 Codex `codex exec` 的 `--skip-git-repo-check --sandbox workspace-write` 與管線 `-` / `stdin=subprocess.DEVNULL` 防卡死規範）不可隨意刪改。
 
 ## 修改後的驗證方式
 
 1. 確認各技能目錄結構完整，`SKILL.md` 格式符合標準 frontmatter（可用 `python .agents/skills/skill-creator/scripts/quick_validate.py <skill_dir>` 驗證）。
 2. 檢查 Python 腳本語法正確與唯讀健檢可執行：`python -m py_compile project/gemini-web-imagegen/scripts/gemini_web_gen.py global/system-remnant-audit/scripts/audit_remnants.py` 及 `python global/system-remnant-audit/scripts/audit_remnants.py`。
-3. 執行全域技能部署測試：`cmd /c "echo. | deploy_global_skills.bat"`，確認四大全域目錄（Claude Code、Antigravity、Codex、OpenCode）複製正常且內容一致。
+3. 執行全域技能部署測試：`cmd /c "echo. | deploy_global_skills.bat"`，確認四大全域目錄（Claude Code、Antigravity、Codex、OpenCode；其中 `codex-imagegen-bridge` 部署至 Claude Code、Antigravity、OpenCode 三家）複製正常且內容一致。
 4. 確保無機密檔案（如 cookies.json、.env）被納入版控。

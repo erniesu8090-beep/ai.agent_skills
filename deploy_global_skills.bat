@@ -6,12 +6,18 @@ cd /d "%~dp0"
 
 for /f %%i in ('powershell -NoProfile -Command "Get-Date -Format yyyyMMdd_HHmmss"') do set "TS=%%i"
 
-echo [DEPLOY] Deploying global skills (opencode-runner, system-remnant-audit)...
+echo [DEPLOY] Deploying global skills (opencode-runner, system-remnant-audit, codex-imagegen-bridge)...
 
 for %%S in (opencode-runner system-remnant-audit) do (
     call :deploy_skill "%%S" "%USERPROFILE%\.claude\skills\%%S" || goto :fail
     call :deploy_skill "%%S" "%USERPROFILE%\.gemini\config\skills\%%S" || goto :fail
     call :deploy_skill "%%S" "%USERPROFILE%\.codex\skills\%%S" || goto :fail
+    call :deploy_skill "%%S" "%USERPROFILE%\.config\opencode\skills\%%S" || goto :fail
+)
+
+for %%S in (codex-imagegen-bridge) do (
+    call :deploy_skill "%%S" "%USERPROFILE%\.claude\skills\%%S" || goto :fail
+    call :deploy_skill "%%S" "%USERPROFILE%\.gemini\config\skills\%%S" || goto :fail
     call :deploy_skill "%%S" "%USERPROFILE%\.config\opencode\skills\%%S" || goto :fail
 )
 
