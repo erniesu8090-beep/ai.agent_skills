@@ -27,7 +27,7 @@
 
 ## 修改後的驗證方式
 
-1. 確認各技能目錄結構完整，`SKILL.md` 格式符合標準 frontmatter（可用 `PYTHONUTF8=1 python project/skill-creator/scripts/quick_validate.py <skill_dir>` 驗證）。
+1. 確認各技能目錄結構完整，`SKILL.md` 格式符合標準 frontmatter（可用 `python .agents/skills/skill-creator/scripts/quick_validate.py <skill_dir>` 驗證）。
 2. 檢查 Python 腳本語法正確與唯讀健檢可執行：`python -m py_compile project/gemini-web-imagegen/scripts/gemini_web_gen.py global/system-remnant-audit/scripts/audit_remnants.py` 及 `python global/system-remnant-audit/scripts/audit_remnants.py`。
 3. 執行全域技能部署測試：`cmd /c "echo. | deploy_global_skills.bat"`，確認四大全域目錄（Claude Code、Antigravity、Codex、OpenCode）複製正常且內容一致。
 4. 確保無機密檔案（如 cookies.json、.env）被納入版控。

@@ -1,6 +1,6 @@
 ---
 name: opencode-runner
-description: 調用 OpenCode CLI 作為獨立子代理（Subagent）執行跨引擎唯讀審查、代碼檢查或獨立比對任務。當使用者提到「OpenCode 審查」、「調用 OpenCode」、「換模型挑錯」、「獨立比對」、「交叉驗證」，或在大改動/高風險邏輯（登入、權限、金流、檔案刪除）完成後需要獨立審查時載入。提供安全唯讀鎖定（--agent plan）、防卡死封裝（< nul / < /dev/null）、動態工作池並行控制與模型選用建議。
+description: 調用 OpenCode CLI 作為獨立子代理（Subagent）執行跨引擎唯讀審查、代碼檢查或獨立比對任務。當使用者提到「OpenCode 審查」、「調用 OpenCode」、「換模型挑錯」、「獨立比對」、「交叉驗證」，或在大改動/高風險邏輯（登入、權限、金流、檔案刪除）完成後需要獨立審查時載入。提供安全唯讀鎖定（--agent plan）、stdin 空輸入防卡死封裝、動態工作池並行控制與模型選用建議。
 ---
 
 # OpenCode CLI Runner (子代理執行器)

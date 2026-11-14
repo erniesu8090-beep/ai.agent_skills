@@ -4,10 +4,90 @@ Quick validation script for skills - minimal version
 """
 
 import sys
-import os
 import re
-import yaml
 from pathlib import Path
+
+try:
+    import yaml
+except ImportError:
+    yaml = None
+
+
+def _strip_yaml_quotes(value: str) -> str:
+    """Strip matching surrounding single or double quotes from a YAML scalar."""
+    if len(value) >= 2 and value[0] == value[-1] and value[0] in ("'", '"'):
+        return value[1:-1]
+    return value
+
+
+def _parse_frontmatter_fallback(frontmatter_text: str) -> dict:
+    """Parse simple SKILL.md YAML frontmatter using only the Python standard library."""
+    result = {}
+    lines = frontmatter_text.splitlines()
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#"):
+            i += 1
+            continue
+        if line[0].isspace():
+            raise ValueError(f"Unexpected indentation at line {i + 1}: {line}")
+        if ":" not in line:
+            raise ValueError(f"Invalid YAML line {i + 1}: {line}")
+
+        key, raw_val = line.split(":", 1)
+        key = key.strip()
+        val = raw_val.strip()
+
+        if val in (">", ">-", "|", "|-"):
+            fold = val.startswith(">")
+            block_lines = []
+            i += 1
+            while i < len(lines):
+                nxt = lines[i]
+                if not nxt.strip():
+                    block_lines.append("")
+                    i += 1
+                    continue
+                if nxt[0].isspace():
+                    block_lines.append(nxt.strip() if fold else nxt.lstrip())
+                    i += 1
+                    continue
+                break
+            joiner = " " if fold else "\n"
+            result[key] = joiner.join(part for part in block_lines if part != "" or not fold).strip()
+            continue
+
+        if val == "":
+            nested = {}
+            i += 1
+            while i < len(lines):
+                nxt = lines[i]
+                if not nxt.strip() or nxt.strip().startswith("#"):
+                    i += 1
+                    continue
+                if nxt[0].isspace():
+                    if ":" not in nxt:
+                        raise ValueError(f"Invalid nested YAML line {i + 1}: {nxt}")
+                    nkey, nval = nxt.strip().split(":", 1)
+                    nested[nkey.strip()] = _strip_yaml_quotes(nval.strip())
+                    i += 1
+                    continue
+                break
+            result[key] = nested if nested else ""
+            continue
+
+        # Handle unquoted multiline continuation (plain scalar)
+        parts = [_strip_yaml_quotes(val)]
+        i += 1
+        while i < len(lines) and lines[i].strip() and lines[i][0].isspace():
+            parts.append(lines[i].strip())
+            i += 1
+        result[key] = " ".join(parts)
+
+    return result
+
 
 def validate_skill(skill_path):
     """Basic validation of a skill"""
@@ -19,7 +99,7 @@ def validate_skill(skill_path):
         return False, "SKILL.md not found"
 
     # Read and validate frontmatter
-    content = skill_md.read_text()
+    content = skill_md.read_text(encoding="utf-8").replace("\r\n", "\n")
     if not content.startswith('---'):
         return False, "No YAML frontmatter found"
 
@@ -32,10 +112,13 @@ def validate_skill(skill_path):
 
     # Parse YAML frontmatter
     try:
-        frontmatter = yaml.safe_load(frontmatter_text)
+        if yaml is not None:
+            frontmatter = yaml.safe_load(frontmatter_text)
+        else:
+            frontmatter = _parse_frontmatter_fallback(frontmatter_text)
         if not isinstance(frontmatter, dict):
             return False, "Frontmatter must be a YAML dictionary"
-    except yaml.YAMLError as e:
+    except Exception as e:
         return False, f"Invalid YAML in frontmatter: {e}"
 
     # Define allowed properties

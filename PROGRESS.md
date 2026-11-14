@@ -26,6 +26,7 @@
 13. 前端 UI「去 AI 樣板味」美學規範入全域規則（2026-11-12）：經使用者確認採「美學規範入全域規則，重型套件留專案備用」架構，將「暖米白底色、石墨炭灰、機能邊條編碼、克制圓角」等反 AI 樣板原則寫入 `ai.agent_rules/global_rules.md` 第 7 節並完成全域派發；`project/frontend-suite/` 完整 React+shadcn+Playwright 套件則維持專案備用庫按需取用。
 14. 將外層 `colab-notebook`（Google Colab 雲端 GPU 筆記本技能）與既有 `project/jupyter-notebook` 合併重構為單一雙支柱聚合技能 `project/notebook-suite/`，採 Router 架構分流本機 Jupyter（實驗/教學）與雲端 Colab GPU 筆記本，並將原目錄安全移入 `_pending_delete_/`（2026-11-14）。
 15. 新增全域技能 `global/system-remnant-audit/`（含 `SKILL.md` 與跨平台唯讀盤點腳本 `scripts/audit_remnants.py`），並升級 `deploy_global_skills.bat` / `.sh` 支援同步 `scripts/` 子目錄至四大 Agent 全域技能目錄（2026-11-14）。
+16. 單份極簡瘦身 `skill-creator` 並通過全庫驗證（2026-11-14）：移除重複之 `project/skill-creator/` 與 `.agents/skills/skill-creator/` 內重型 Eval 評測模組（移入 `_pending_delete_/`），僅留單份核心規範（`SKILL.md`、無第三方相依之 `quick_validate.py`、`package_skill.py`）；同步微調 `global/opencode-runner/SKILL.md` description 移除角括號，使全庫 11 個技能全數通過 `quick_validate.py` 驗證並完成四大 Agent 全域部署，更新 `AGENTS.md`、`README.md` 與 `PROGRESS.md`。
 
 ## 二、使用者已確認的事
 
@@ -33,7 +34,7 @@
 - **技能架構定案為二分法**：只區分「全域技能（Global）」與「專案專屬技能（Project-specific）」，不設中間領域層（2026-11-08 使用者確認）。
 - **母本庫對稱定位**：本倉庫定位為各 AI Agent 的**技能母本庫**，與 `ai.agent_rules` 規則母本庫功能完全對稱；兩者各自獨立無相依（2026-11-08 使用者確認）。
 - **全域技能收納項**：收納 `opencode-runner`（跨引擎唯讀審查規範）與 `system-remnant-audit`（四大 Agent 與 Windows Jump Lists 唯讀歷史殘骸盤點，2026-11-14 新增）。全域真實維護母本定於 `ai.agent_skills\global\`。原 `frontend-design` 依使用者需求改為併入專案備用之 `project/frontend-suite/` 按需載入（2026-11-10 使用者確認）。
-- **專案備用技能處置**：前端 GUI 美學全功能套件（`frontend-suite`）、辦公文檔四件套（`document-skills`）、技能製作評測（`skill-creator`）、生圖/影音（`gemini-web-imagegen`、`google-flow-bridge`）確認屬專案專屬性質（非全域），保留在 `ai.agent_skills\project\` 作為備用與共用範本庫，待未來特定專案需要時再複製進該專案的 `.agents/skills/`（2026-11-08 及 2026-11-10 使用者確認）。
+- **專案備用技能處置**：前端 GUI 美學全功能套件（`frontend-suite`）、辦公文檔四件套（`document-skills`）、生圖/影音（`gemini-web-imagegen`、`google-flow-bridge`）等確認屬專案專屬性質（非全域），保留在 `ai.agent_skills\project\` 作為備用與共用範本庫，待未來特定專案需要時再複製進該專案的 `.agents/skills/`（2026-11-08 及 2026-11-10 使用者確認）。原重複的 `project/skill-creator/` 已整併移除，僅於 `.agents/skills/skill-creator/` 保留單份極簡版（`SKILL.md`、`quick_validate.py`、`package_skill.py`）作為本倉庫開發與驗證工具（2026-11-14 使用者確認）。
 - **專案專屬技能部署原則**：隨專案各自的 Git 倉庫版本控管與同步，免額外安裝腳本或全域設定。
 
 ## 三、待使用者決定（下次討論從這裡開始）
@@ -97,7 +98,6 @@
 | D:\AI_Workspace\ai.agent_skills\global\system-remnant-audit | system-remnant-audit | 自訂 | 四大 AI Agent 與 Windows Jump Lists 唯讀歷史殘骸健檢技能與 Python 腳本（全域技能母本） |
 | D:\AI_Workspace\ai.agent_skills\project\frontend-suite | frontend-suite | Anthropic 官方 | 前端 GUI 排版與設計全功能四合一套件（涵蓋美學防套版、10款主題色票、React+shadcn單檔打包、Playwright截圖驗證） |
 | D:\AI_Workspace\ai.agent_skills\project\document-skills | document-skills | Anthropic 官方 | Office 與 PDF 全功能處理套件（Word 排版、Excel recalc 重算、PPT 生成、PDF 提取填表） |
-| D:\AI_Workspace\ai.agent_skills\project\skill-creator | skill-creator | Anthropic 官方 | 建立、優化、評測與除錯 Agent Skills 的標準指引與評估工具（專案備用母本） |
 | D:\AI_Workspace\ai.agent_skills\project\cli-creator | cli-creator | OpenAI 官方 | 建立高品質、可由命令行直接調用、輸出穩定 JSON、具備良好錯誤代碼與伴生 Skill 的標準化 CLI 工具 |
 | D:\AI_Workspace\ai.agent_skills\project\gh-fix-ci | gh-fix-ci | OpenAI 官方 | 排查並修復 GitHub Actions 失敗的 PR checks，自動提取錯誤日誌摘要、擬定修復計畫並驗證 |
 | D:\AI_Workspace\ai.agent_skills\project\notebook-suite | notebook-suite | OpenAI 官方 + 自訂 | Jupyter 與 Google Colab 雲端 GPU 筆記本全功能雙支柱套件（涵蓋 Colab GPU 摺疊表單骨架、清理與 AST 驗證，以及本機實驗/教學筆記本鷹架） |
@@ -115,7 +115,7 @@
 
 | 專案分類與路徑 | 技能名稱 | 說明 |
 |---|---|---|
-| **技能母本庫專案**<br>`D:\AI_Workspace\ai.agent_skills\.agents\skills\` | `skill-creator` | Agent Skills 製作、修改、描述詞最佳化與評測標準指引（本專案常駐技能） |
+| **技能母本庫專案**<br>`D:\AI_Workspace\ai.agent_skills\.agents\skills\` | `skill-creator` | Agent Skills 製作、重構、格式驗證（`quick_validate.py`）與打包（`package_skill.py`）極簡版常駐技能 |
 | **短片影音專案**<br>`D:\AI_Workspace\media.projects\short.video_studio\agent\skills\` | `blender-previs` | 山獅霸 AI 短劇的 Blender 3D 空間白模預演、鏡位契約、布置圖鎖定與提示詞素材打包 |
 | 同上 | `shanshiba-drama` | AI 短劇編劇與雙軌執行導演（V2.5 雙軌模式：原創/改編/抽幀逆向，排鏡表與提示詞流） |
 | **逆向工程專案**<br>`D:\AI_Workspace\reverse.projects\rea\.agents\skills\` | `reverse-engineer-anything` | 本機、二進制、韌體、Electron 與瀏覽器目標的逆向工程與反編譯分析工具 |
@@ -133,7 +133,7 @@
 ## 六、下一步
 
 1. **依專案需求複製技能**：未來當其他專案有辦公文檔（`xlsx`/`pdf`/`docx`/`pptx`）、多媒體生圖（`gemini-web-imagegen`/`google-flow-bridge`）需求時，自本母本庫 `project/` 複製對應技能至該專案的 `.agents/skills/` 內隨專案版控。
-2. **技能開發與優化**：利用本專案已常駐安裝之 `.agents/skills/skill-creator`，為工作區自訂技能建立 Eval 評測、打磨 Trigger Description 並標準化輸出結構。
+2. **技能開發與優化**：利用本專案常駐之極簡版 `.agents/skills/skill-creator`，維持 `SKILL.md` 標準化撰寫、frontmatter 驗證與觸發描述最佳化。
 3. **新增共用技能**：若開發出新的跨專案共用技能，在此建立獨立目錄、撰寫 `SKILL.md`，若屬全域技能則同步加入 `deploy_global_skills.bat` / `.sh` 的部署清單。
 
 ## 七、接手須知（環境與工具）
@@ -164,3 +164,4 @@
 | 2026-11-12 | 管制機 | 前端 UI 採「美學規範入全域規則，重型套件留專案備用」架構，將暖米底色、石墨炭灰與反套版原則寫入 global_rules.md 並完成三大 Agent 全域派發 |
 | 2026-11-14 | 住家開發機 | 將外層 colab-notebook 與 project/jupyter-notebook 整合重構為雙支柱聚合技能 project/notebook-suite/，通過腳本編譯、validate --strict、new/clean 實測與部署驗證 |
 | 2026-11-14 | 住家開發機 | 新增全域技能 global/system-remnant-audit/（SKILL.md 與唯讀健檢腳本 audit_remnants.py），升級 deploy_global_skills.bat/.sh 支援 scripts/ 同步並通過四大 Agent 全域部署與實測驗證 |
+| 2026-11-14 | 住家開發機 | 移除重複之 project/skill-creator/ 並將 .agents/skills/skill-creator/ 瘦身為單份極簡版（僅留 SKILL.md、無相依版 quick_validate.py、package_skill.py），微調 opencode-runner description 通過全庫 11/11 驗證並同步部署四大 Agent，更新 AGENTS.md、README.md 與 PROGRESS.md |

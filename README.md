@@ -15,7 +15,7 @@
 | 技能分類 | 範圍與生命週期 | 存放與部署方式 | 收錄技能 |
 |---|---|---|---|
 | **全域技能 (Global)** | 跨所有專案通用、所有 Agent 隨時調用的規範與核心能力。 | 由本倉庫一鍵部署至使用者全域目錄：<br>• `~/.claude/skills/`<br>• `~/.gemini/config/skills/`<br>• `~/.codex/skills/`<br>• `~/.config/opencode/skills/` | • `global/opencode-runner/`<br>• `global/system-remnant-audit/` |
-| **專案專屬技能 (Project-specific)** | 僅特定業務專案會用到的專用工具與流程母本。 | 平時於本倉庫作為**備用範本**；當特定專案需要時，複製至該專案的 `.agents/skills/` 內隨專案 Git 倉庫版控。 | • `project/frontend-suite/`<br>• `project/document-skills/`<br>• `project/notebook-suite/`<br>• `project/skill-creator/`<br>• `project/cli-creator/`<br>• `project/gh-fix-ci/`<br>• `project/gemini-web-imagegen/`<br>• `project/google-flow-bridge/`<br>• `project/threejs/` |
+| **專案專屬技能 (Project-specific)** | 僅特定業務專案會用到的專用工具與流程母本。 | 平時於本倉庫作為**備用範本**；當特定專案需要時，複製至該專案的 `.agents/skills/` 內隨專案 Git 倉庫版控。 | • `project/frontend-suite/`<br>• `project/document-skills/`<br>• `project/notebook-suite/`<br>• `project/cli-creator/`<br>• `project/gh-fix-ci/`<br>• `project/gemini-web-imagegen/`<br>• `project/google-flow-bridge/`<br>• `project/threejs/` |
 
 ---
 
@@ -30,7 +30,6 @@
 | `project/notebook-suite/` | Notebook Suite (Jupyter & Colab GPU) | 專案備用 | OpenAI 官方 + 自訂 | Jupyter 與 Google Colab 雲端 GPU 筆記本全功能雙支柱套件：涵蓋 Colab 雲端 GPU（L4/A100/G4）互動表單骨架、獨立環境隔離、執行痕跡清理與 AST 語法驗證，以及本機實驗分析型（experiment）與教學導向型（tutorial）筆記本鷹架生成。 |
 | `project/cli-creator/` | CLI Creator | 專案備用 | OpenAI 官方 | 建立高品質、可由命令行直接調用、輸出穩定 JSON、具備良好錯誤代碼與伴生 Skill 的標準化 CLI 工具。 |
 | `project/gh-fix-ci/` | GitHub PR Checks & CI Fixer | 專案備用 | OpenAI 官方 | 排查並修復 GitHub Actions 失敗的 PR checks，自動提取錯誤日誌摘要、擬定修復計畫並驗證。 |
-| `project/skill-creator/` | Agent Skill Creator & Evaluator | 專案備用 | Anthropic 官方 | 建立、優化、評測與除錯 Agent Skills 的標準指引與評估工具。 |
 | `project/gemini-web-imagegen/` | Gemini Web Image Generator CLI | 專案備用 | 自訂 | 沿用 gemini.google.com 網頁登入額度的免 API 金鑰 2K 生圖與圖生圖工具（需要時放入專案）。 |
 | `project/google-flow-bridge/` | Google Flow Bridge | 專案備用 | 自訂 | 自動化調用 Google Flow 生成 Nano Banana 2K 圖片或 Veo MP4 影片（需要時放入專案）。 |
 | `project/threejs/` | Three.js r170 Web 3D Suite | 專案備用 | 自訂 | Three.js r170 現代 Web 3D 開發與模型檢視器指引（含最新繁中文件、Import Map 單檔架構、GLTF 載入與效能最佳化）。 |
@@ -65,7 +64,7 @@ Copy-Item -Recurse project\gemini-web-imagegen ..\media.projects\short.video_stu
 ```
 放入後隨該專案的 Git 倉庫進行提交與同步，完全不依賴外部全域環境。
 
-> **註**：本母本庫專案（`ai.agent_skills`）本身亦已於 `.agents/skills/skill-creator/` 安裝技能製作工具，常駐支援母本庫之技能擴充、撰寫與 Eval 評測。
+> **註**：本母本庫專案（`ai.agent_skills`）已於 `.agents/skills/skill-creator/` 保留單份極簡版技能製作工具（`SKILL.md`、`quick_validate.py`、`package_skill.py`），常駐支援母本庫之技能擴充、格式驗證與打包。
 
 ### 3. 安裝至 Google Gemini 官方網頁版 / 手機 App (gemini.google.com)
 Google Gemini 官方應用程式已全面將 Gems 升級為 **Skills（技能）** 架構，原生支援 `agentskills.io` 開放標準的 `SKILL.md`。
@@ -78,7 +77,7 @@ Google Gemini 官方應用程式已全面將 Gems 升級為 **Skills（技能）
 Gemini 雲端 App 主要是依據 Markdown 專家指南來引導雲端模型行為，直接選取文件最快速：
 1. 瀏覽器造訪 [gemini.google.com](https://gemini.google.com) ➜ 點選左側 **「Skills」** ➜ 點選 **「新增技能（Create Skill / +）」**。
 2. 點選 **「選取 檔案（Select Files）」**：
-   - 安裝 `skill-creator`：選取 `project/skill-creator/SKILL.md` 即可。
+   - 安裝 `skill-creator`：選取 `.agents/skills/skill-creator/SKILL.md` 即可。
    - 安裝 `document-skills`：選取 `project/document-skills/SKILL.md` 以及 `references/` 底下的 4 個指南（`docx.md`、`xlsx.md`、`pptx.md`、`pdf.md`）。
 3. 檢查名稱與觸發描述無誤後，點選 **「儲存 / 啟用」**。
 
