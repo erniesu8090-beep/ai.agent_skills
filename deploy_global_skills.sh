@@ -6,18 +6,10 @@ cd "$(dirname "$0")"
 
 ts=$(date +%Y%m%d_%H%M%S)
 
-deploy_skill() {
-    skill_name="$1"
-    target_dir="$2"
-    src_file="$(pwd)/global/$skill_name/SKILL.md"
-    dst_file="$target_dir/SKILL.md"
-
-    if [ ! -f "$src_file" ]; then
-        echo "[ERROR] Source skill file not found: $src_file"
-        exit 1
-    fi
-
-    mkdir -p "$target_dir"
+sync_file() {
+    src_file="$1"
+    dst_file="$2"
+    mkdir -p "$(dirname "$dst_file")"
 
     if [ -f "$dst_file" ]; then
         if cmp -s "$src_file" "$dst_file"; then
@@ -32,18 +24,44 @@ deploy_skill() {
         cp "$src_file" "$dst_file"
         echo "[OK] $dst_file"
     fi
+}
 
-    if [ -f "$(pwd)/global/$skill_name/LICENSE.txt" ]; then
-        cp "$(pwd)/global/$skill_name/LICENSE.txt" "$target_dir/LICENSE.txt"
+deploy_skill() {
+    skill_name="$1"
+    target_dir="$2"
+    src_dir="$(pwd)/global/$skill_name"
+    src_file="$src_dir/SKILL.md"
+
+    if [ ! -f "$src_file" ]; then
+        echo "[ERROR] Source skill file not found: $src_file"
+        exit 1
+    fi
+
+    sync_file "$src_file" "$target_dir/SKILL.md"
+
+    if [ -f "$src_dir/LICENSE.txt" ]; then
+        sync_file "$src_dir/LICENSE.txt" "$target_dir/LICENSE.txt"
+    fi
+
+    if [ -d "$src_dir/scripts" ]; then
+        for f in "$src_dir/scripts/"*; do
+            [ -f "$f" ] || continue
+            case "$f" in
+                *.pyc) continue ;;
+            esac
+            sync_file "$f" "$target_dir/scripts/$(basename "$f")"
+        done
     fi
 }
 
-echo "[DEPLOY] 正在部署全域技能 (opencode-runner)..."
+echo "[DEPLOY] 正在部署全域技能 (opencode-runner, system-remnant-audit)..."
 
-deploy_skill "opencode-runner" "$HOME/.claude/skills/opencode-runner"
-deploy_skill "opencode-runner" "$HOME/.gemini/config/skills/opencode-runner"
-deploy_skill "opencode-runner" "$HOME/.codex/skills/opencode-runner"
-deploy_skill "opencode-runner" "$HOME/.config/opencode/skills/opencode-runner"
+for skill_name in opencode-runner system-remnant-audit; do
+    deploy_skill "$skill_name" "$HOME/.claude/skills/$skill_name"
+    deploy_skill "$skill_name" "$HOME/.gemini/config/skills/$skill_name"
+    deploy_skill "$skill_name" "$HOME/.codex/skills/$skill_name"
+    deploy_skill "$skill_name" "$HOME/.config/opencode/skills/$skill_name"
+done
 
 # 移除已下線的全域技能
 for dep_dir in "$HOME/.claude/skills/frontend-design" "$HOME/.gemini/config/skills/frontend-design" "$HOME/.codex/skills/frontend-design" "$HOME/.config/opencode/skills/frontend-design"; do

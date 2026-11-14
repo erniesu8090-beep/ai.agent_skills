@@ -25,13 +25,14 @@
 12. 將 Web 3D 檢視器技能 `threejs` 自 `ai.agent_rules` 遷入 `project/threejs/` 作為專案備用母本，補齊雙庫解耦與 README 技能清單（2026-11-10）。
 13. 前端 UI「去 AI 樣板味」美學規範入全域規則（2026-11-12）：經使用者確認採「美學規範入全域規則，重型套件留專案備用」架構，將「暖米白底色、石墨炭灰、機能邊條編碼、克制圓角」等反 AI 樣板原則寫入 `ai.agent_rules/global_rules.md` 第 7 節並完成全域派發；`project/frontend-suite/` 完整 React+shadcn+Playwright 套件則維持專案備用庫按需取用。
 14. 將外層 `colab-notebook`（Google Colab 雲端 GPU 筆記本技能）與既有 `project/jupyter-notebook` 合併重構為單一雙支柱聚合技能 `project/notebook-suite/`，採 Router 架構分流本機 Jupyter（實驗/教學）與雲端 Colab GPU 筆記本，並將原目錄安全移入 `_pending_delete_/`（2026-11-14）。
+15. 新增全域技能 `global/system-remnant-audit/`（含 `SKILL.md` 與跨平台唯讀盤點腳本 `scripts/audit_remnants.py`），並升級 `deploy_global_skills.bat` / `.sh` 支援同步 `scripts/` 子目錄至四大 Agent 全域技能目錄（2026-11-14）。
 
 ## 二、使用者已確認的事
 
 - **前端 UI「去 AI 味」採美學入全域規則、重型套件留專案架構（2026-11-12 使用者確認）**：使用者重視介面視覺去 AI 樣板感（避免科技深藍、純白與紫藍漸層，偏好大林煉油廠儀表板式之暖米白底色、石墨深炭灰與機能性邊條）。定案將該核心美學與色票規範寫入 `ai.agent_rules` 全域規則，使所有 Agent 在任何專案或隨手寫 HTML 時皆能零額外 Token 負擔直覺套用；而具備 Vite、shadcn/ui 與 Playwright 之完整大型套件 `project/frontend-suite/` 仍維持專案專屬備用庫。
 - **技能架構定案為二分法**：只區分「全域技能（Global）」與「專案專屬技能（Project-specific）」，不設中間領域層（2026-11-08 使用者確認）。
 - **母本庫對稱定位**：本倉庫定位為各 AI Agent 的**技能母本庫**，與 `ai.agent_rules` 規則母本庫功能完全對稱；兩者各自獨立無相依（2026-11-08 使用者確認）。
-- **全域技能收納項**：收納 `opencode-runner`（跨引擎唯讀審查規範）。全域真實維護母本定於 `ai.agent_skills\global\`。原 `frontend-design` 依使用者需求改為併入專案備用之 `project/frontend-suite/` 按需載入（2026-11-10 使用者確認）。
+- **全域技能收納項**：收納 `opencode-runner`（跨引擎唯讀審查規範）與 `system-remnant-audit`（四大 Agent 與 Windows Jump Lists 唯讀歷史殘骸盤點，2026-11-14 新增）。全域真實維護母本定於 `ai.agent_skills\global\`。原 `frontend-design` 依使用者需求改為併入專案備用之 `project/frontend-suite/` 按需載入（2026-11-10 使用者確認）。
 - **專案備用技能處置**：前端 GUI 美學全功能套件（`frontend-suite`）、辦公文檔四件套（`document-skills`）、技能製作評測（`skill-creator`）、生圖/影音（`gemini-web-imagegen`、`google-flow-bridge`）確認屬專案專屬性質（非全域），保留在 `ai.agent_skills\project\` 作為備用與共用範本庫，待未來特定專案需要時再複製進該專案的 `.agents/skills/`（2026-11-08 及 2026-11-10 使用者確認）。
 - **專案專屬技能部署原則**：隨專案各自的 Git 倉庫版本控管與同步，免額外安裝腳本或全域設定。
 
@@ -93,6 +94,7 @@
 | 倉庫路徑 | 技能名稱 | 來源 | 說明 |
 |---|---|---|---|
 | D:\AI_Workspace\ai.agent_skills\global\opencode-runner | opencode-runner | 自訂 | 調用 OpenCode CLI 唯讀審查與比對規範（全域技能母本，開發機與管制機通用） |
+| D:\AI_Workspace\ai.agent_skills\global\system-remnant-audit | system-remnant-audit | 自訂 | 四大 AI Agent 與 Windows Jump Lists 唯讀歷史殘骸健檢技能與 Python 腳本（全域技能母本） |
 | D:\AI_Workspace\ai.agent_skills\project\frontend-suite | frontend-suite | Anthropic 官方 | 前端 GUI 排版與設計全功能四合一套件（涵蓋美學防套版、10款主題色票、React+shadcn單檔打包、Playwright截圖驗證） |
 | D:\AI_Workspace\ai.agent_skills\project\document-skills | document-skills | Anthropic 官方 | Office 與 PDF 全功能處理套件（Word 排版、Excel recalc 重算、PPT 生成、PDF 提取填表） |
 | D:\AI_Workspace\ai.agent_skills\project\skill-creator | skill-creator | Anthropic 官方 | 建立、優化、評測與除錯 Agent Skills 的標準指引與評估工具（專案備用母本） |
@@ -161,3 +163,4 @@
 | 2026-11-10 | 住家開發機 | 調研 OpenAI 官方技能庫 openai/skills，收納 cli-creator、gh-fix-ci 與 jupyter-notebook 至 project/ 專案備用庫，完成多 Agent 中立化改寫與自動化驗證 |
 | 2026-11-12 | 管制機 | 前端 UI 採「美學規範入全域規則，重型套件留專案備用」架構，將暖米底色、石墨炭灰與反套版原則寫入 global_rules.md 並完成三大 Agent 全域派發 |
 | 2026-11-14 | 住家開發機 | 將外層 colab-notebook 與 project/jupyter-notebook 整合重構為雙支柱聚合技能 project/notebook-suite/，通過腳本編譯、validate --strict、new/clean 實測與部署驗證 |
+| 2026-11-14 | 住家開發機 | 新增全域技能 global/system-remnant-audit/（SKILL.md 與唯讀健檢腳本 audit_remnants.py），升級 deploy_global_skills.bat/.sh 支援 scripts/ 同步並通過四大 Agent 全域部署與實測驗證 |

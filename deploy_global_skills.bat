@@ -6,12 +6,14 @@ cd /d "%~dp0"
 
 for /f %%i in ('powershell -NoProfile -Command "Get-Date -Format yyyyMMdd_HHmmss"') do set "TS=%%i"
 
-echo [DEPLOY] Deploying global skills (opencode-runner)...
+echo [DEPLOY] Deploying global skills (opencode-runner, system-remnant-audit)...
 
-call :deploy_skill "opencode-runner" "%USERPROFILE%\.claude\skills\opencode-runner" || goto :fail
-call :deploy_skill "opencode-runner" "%USERPROFILE%\.gemini\config\skills\opencode-runner" || goto :fail
-call :deploy_skill "opencode-runner" "%USERPROFILE%\.codex\skills\opencode-runner" || goto :fail
-call :deploy_skill "opencode-runner" "%USERPROFILE%\.config\opencode\skills\opencode-runner" || goto :fail
+for %%S in (opencode-runner system-remnant-audit) do (
+    call :deploy_skill "%%S" "%USERPROFILE%\.claude\skills\%%S" || goto :fail
+    call :deploy_skill "%%S" "%USERPROFILE%\.gemini\config\skills\%%S" || goto :fail
+    call :deploy_skill "%%S" "%USERPROFILE%\.codex\skills\%%S" || goto :fail
+    call :deploy_skill "%%S" "%USERPROFILE%\.config\opencode\skills\%%S" || goto :fail
+)
 
 call :remove_deprecated_skill "%USERPROFILE%\.claude\skills\frontend-design"
 call :remove_deprecated_skill "%USERPROFILE%\.gemini\config\skills\frontend-design"
@@ -26,7 +28,8 @@ exit /b 0
 :deploy_skill
 set "SKILL_NAME=%~1"
 set "TARGET_DIR=%~2"
-set "SRC_FILE=%CD%\global\%SKILL_NAME%\SKILL.md"
+set "SRC_DIR=%CD%\global\%SKILL_NAME%"
+set "SRC_FILE=%SRC_DIR%\SKILL.md"
 set "DST_FILE=%TARGET_DIR%\SKILL.md"
 
 if not exist "%SRC_FILE%" (
@@ -34,25 +37,40 @@ if not exist "%SRC_FILE%" (
     exit /b 1
 )
 
-if not exist "%TARGET_DIR%" mkdir "%TARGET_DIR%" >nul 2>&1
+call :sync_file "%SRC_FILE%" "%DST_FILE%" || exit /b 1
 
-if exist "%DST_FILE%" (
-    fc /b "%SRC_FILE%" "%DST_FILE%" >nul 2>&1 && (
-        echo [SKIP] %DST_FILE% is already up to date.
-        exit /b 0
-    ) || (
-        copy /y "%DST_FILE%" "%DST_FILE%.%TS%.bak" >nul || exit /b 1
-        echo [BACKUP] %DST_FILE%.%TS%.bak
-        copy /y "%SRC_FILE%" "%DST_FILE%" >nul || exit /b 1
-        echo [OK] %DST_FILE%
-    )
-) else (
-    copy /y "%SRC_FILE%" "%DST_FILE%" >nul || exit /b 1
-    echo [OK] %DST_FILE%
+if exist "%SRC_DIR%\LICENSE.txt" (
+    call :sync_file "%SRC_DIR%\LICENSE.txt" "%TARGET_DIR%\LICENSE.txt" || exit /b 1
 )
 
-if exist "%CD%\global\%SKILL_NAME%\LICENSE.txt" (
-    copy /y "%CD%\global\%SKILL_NAME%\LICENSE.txt" "%TARGET_DIR%\LICENSE.txt" >nul 2>&1
+if exist "%SRC_DIR%\scripts" (
+    for %%F in ("%SRC_DIR%\scripts\*") do (
+        if /i not "%%~xF"==".pyc" (
+            call :sync_file "%%~fF" "%TARGET_DIR%\scripts\%%~nxF" || exit /b 1
+        )
+    )
+)
+exit /b 0
+
+:sync_file
+set "F_SRC=%~1"
+set "F_DST=%~2"
+for %%D in ("%F_DST%") do set "F_DST_DIR=%%~dpD"
+if not exist "%F_DST_DIR%" mkdir "%F_DST_DIR%" >nul 2>&1
+
+if exist "%F_DST%" (
+    fc /b "%F_SRC%" "%F_DST%" >nul 2>&1 && (
+        echo [SKIP] %F_DST% is already up to date.
+        exit /b 0
+    ) || (
+        copy /y "%F_DST%" "%F_DST%.%TS%.bak" >nul || exit /b 1
+        echo [BACKUP] %F_DST%.%TS%.bak
+        copy /y "%F_SRC%" "%F_DST%" >nul || exit /b 1
+        echo [OK] %F_DST%
+    )
+) else (
+    copy /y "%F_SRC%" "%F_DST%" >nul || exit /b 1
+    echo [OK] %F_DST%
 )
 exit /b 0
 

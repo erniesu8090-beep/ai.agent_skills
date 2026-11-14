@@ -14,7 +14,7 @@
 
 | 技能分類 | 範圍與生命週期 | 存放與部署方式 | 收錄技能 |
 |---|---|---|---|
-| **全域技能 (Global)** | 跨所有專案通用、所有 Agent 隨時調用的規範與核心能力。 | 由本倉庫一鍵部署至使用者全域目錄：<br>• `~/.claude/skills/`<br>• `~/.gemini/config/skills/`<br>• `~/.config/opencode/skills/` | • `global/opencode-runner/` |
+| **全域技能 (Global)** | 跨所有專案通用、所有 Agent 隨時調用的規範與核心能力。 | 由本倉庫一鍵部署至使用者全域目錄：<br>• `~/.claude/skills/`<br>• `~/.gemini/config/skills/`<br>• `~/.codex/skills/`<br>• `~/.config/opencode/skills/` | • `global/opencode-runner/`<br>• `global/system-remnant-audit/` |
 | **專案專屬技能 (Project-specific)** | 僅特定業務專案會用到的專用工具與流程母本。 | 平時於本倉庫作為**備用範本**；當特定專案需要時，複製至該專案的 `.agents/skills/` 內隨專案 Git 倉庫版控。 | • `project/frontend-suite/`<br>• `project/document-skills/`<br>• `project/notebook-suite/`<br>• `project/skill-creator/`<br>• `project/cli-creator/`<br>• `project/gh-fix-ci/`<br>• `project/gemini-web-imagegen/`<br>• `project/google-flow-bridge/`<br>• `project/threejs/` |
 
 ---
@@ -24,6 +24,7 @@
 | 技能目錄 | 名稱 | 分類 | 來源 | 說明 |
 |---|---|---|---|---|
 | `global/opencode-runner/` | OpenCode CLI Runner | 全域技能 | 自訂 | 提供 OpenCode 子代理唯讀審查（`--agent plan`）、防卡死調用（`< nul`）與動態工作池安全規範。 |
+| `global/system-remnant-audit/` | System Remnant Audit | 全域技能 | 自訂 | 一鍵唯讀盤點四大 AI Agent 家目錄（`.gemini`、`.claude`、`.codex`、`.config/opencode`）、Windows AppData 舊版快取與工作列 Jump Lists 歷史殘骸，先報清單再經確認移入回收筒。 |
 | `project/frontend-suite/` | Frontend Suite (UI/UX, Theming & Testing) | 專案備用 | Anthropic 官方 | 前端 GUI 排版與設計全功能四合一套件：涵蓋前端美學與反樣板感（frontend-design）、10 款主題與色票生成（theme-factory）、React 18 + shadcn 工程化打包（web-artifacts-builder）、Playwright 截圖排版驗證（webapp-testing）。 |
 | `project/document-skills/` | Document Skills Suite (Office & PDF) | 專案備用 | Anthropic 官方 | Office 與 PDF 全功能處理套件：涵蓋 Word 排版、Excel 試算表與 recalc 公式重算、PPT 投影片生成、PDF 提取與表單填寫。 |
 | `project/notebook-suite/` | Notebook Suite (Jupyter & Colab GPU) | 專案備用 | OpenAI 官方 + 自訂 | Jupyter 與 Google Colab 雲端 GPU 筆記本全功能雙支柱套件：涵蓋 Colab 雲端 GPU（L4/A100/G4）互動表單骨架、獨立環境隔離、執行痕跡清理與 AST 語法驗證，以及本機實驗分析型（experiment）與教學導向型（tutorial）筆記本鷹架生成。 |
@@ -43,8 +44,8 @@
 
 ## 使用與部署方式
 
-### 1. 全域技能一鍵部署（本機三大 Agent）
-若更新了全域技能（如 `global/opencode-runner`），或在新電腦環境初始化：
+### 1. 全域技能一鍵部署（本機四大 Agent）
+若更新了全域技能（如 `global/opencode-runner` 或 `global/system-remnant-audit`），或在新電腦環境初始化：
 - **Windows**：雙擊或執行 `deploy_global_skills.bat`
 - **Linux / macOS**：執行 `sh deploy_global_skills.sh`
 
