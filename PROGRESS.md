@@ -27,14 +27,16 @@
 14. 將外層 `colab-notebook`（Google Colab 雲端 GPU 筆記本技能）與既有 `project/jupyter-notebook` 合併重構為單一雙支柱聚合技能 `project/notebook-suite/`，採 Router 架構分流本機 Jupyter（實驗/教學）與雲端 Colab GPU 筆記本，並將原目錄安全移入 `_pending_delete_/`（2026-11-14）。
 15. 新增全域技能 `global/system-remnant-audit/`（含 `SKILL.md` 與跨平台唯讀盤點腳本 `scripts/audit_remnants.py`），並升級 `deploy_global_skills.bat` / `.sh` 支援同步 `scripts/` 子目錄至四大 Agent 全域技能目錄（2026-11-14）。
 16. 單份極簡瘦身 `skill-creator` 並通過全庫驗證（2026-11-14）：移除重複之 `project/skill-creator/` 與 `.agents/skills/skill-creator/` 內重型 Eval 評測模組（移入 `_pending_delete_/`），僅留單份核心規範（`SKILL.md`、無第三方相依之 `quick_validate.py`、`package_skill.py`）；同步微調 `global/opencode-runner/SKILL.md` description 移除角括號，使全庫 11 個技能全數通過 `quick_validate.py` 驗證並完成四大 Agent 全域部署，更新 `AGENTS.md`、`README.md` 與 `PROGRESS.md`。
+17. 納管並修補全域生圖橋接技能 `global/codex-imagegen-bridge/`（2026-11-14）：追查今日 `作圖風格` 專案 `codex exec` 卡死在 `Reading additional input from stdin...` 與雙引號遭 `codex.cmd` 拆散問題，將 `codex-imagegen-bridge` 正式收入 `global/` 統一維護，改為無 BOM UTF-8 管線傳參（`$prompt | codex exec ... -`）並補齊 Python `subprocess.DEVNULL` 與禁用 `--dangerously-skip-permissions` 規範；更新 `deploy_global_skills.bat` / `.sh` 部署至 Antigravity、Claude Code、OpenCode 三大全域目錄並通過全庫驗證。
+18. 升級 `.agents/skills/skill-creator/` 為跨平台極簡強化版並統一單行 `description`（2026-11-14）：吸收整合三平台版核心腳本（`init_skill.py`、`quick_validate.py`、`package_skill.py`，不納入重型與缺檔之 `eval-viewer/` 與 `agents/`），補齊五大平台（Antigravity、Claude Code、Codex、OpenCode、Gemini App）規範，新增 24KB 上限、單行 `description` 嚴格檢查與 `--gemini` 白名單打包；同步將 `project/notebook-suite/SKILL.md` 改為單行 `description`，通過全庫 12/12 `--strict` 驗證與腳本實測。
 
 ## 二、使用者已確認的事
 
 - **前端 UI「去 AI 味」採美學入全域規則、重型套件留專案架構（2026-11-12 使用者確認）**：使用者重視介面視覺去 AI 樣板感（避免科技深藍、純白與紫藍漸層，偏好大林煉油廠儀表板式之暖米白底色、石墨深炭灰與機能性邊條）。定案將該核心美學與色票規範寫入 `ai.agent_rules` 全域規則，使所有 Agent 在任何專案或隨手寫 HTML 時皆能零額外 Token 負擔直覺套用；而具備 Vite、shadcn/ui 與 Playwright 之完整大型套件 `project/frontend-suite/` 仍維持專案專屬備用庫。
 - **技能架構定案為二分法**：只區分「全域技能（Global）」與「專案專屬技能（Project-specific）」，不設中間領域層（2026-11-08 使用者確認）。
 - **母本庫對稱定位**：本倉庫定位為各 AI Agent 的**技能母本庫**，與 `ai.agent_rules` 規則母本庫功能完全對稱；兩者各自獨立無相依（2026-11-08 使用者確認）。
-- **全域技能收納項**：收納 `opencode-runner`（跨引擎唯讀審查規範）與 `system-remnant-audit`（四大 Agent 與 Windows Jump Lists 唯讀歷史殘骸盤點，2026-11-14 新增）。全域真實維護母本定於 `ai.agent_skills\global\`。原 `frontend-design` 依使用者需求改為併入專案備用之 `project/frontend-suite/` 按需載入（2026-11-10 使用者確認）。
-- **專案備用技能處置**：前端 GUI 美學全功能套件（`frontend-suite`）、辦公文檔四件套（`document-skills`）、生圖/影音（`gemini-web-imagegen`、`google-flow-bridge`）等確認屬專案專屬性質（非全域），保留在 `ai.agent_skills\project\` 作為備用與共用範本庫，待未來特定專案需要時再複製進該專案的 `.agents/skills/`（2026-11-08 及 2026-11-10 使用者確認）。原重複的 `project/skill-creator/` 已整併移除，僅於 `.agents/skills/skill-creator/` 保留單份極簡版（`SKILL.md`、`quick_validate.py`、`package_skill.py`）作為本倉庫開發與驗證工具（2026-11-14 使用者確認）。
+- **全域技能收納項**：收納 `opencode-runner`（跨引擎唯讀審查規範）、`system-remnant-audit`（四大 Agent 與 Windows Jump Lists 唯讀歷史殘骸盤點，2026-11-14 新增）與 `codex-imagegen-bridge`（跨工具調用本機 Codex `$imagegen` 生圖橋接，2026-11-14 納管並修補 stdin 卡死與引號拆參）。全域真實維護母本定於 `ai.agent_skills\global\`。原 `frontend-design` 依使用者需求改為併入專案備用之 `project/frontend-suite/` 按需載入（2026-11-10 使用者確認）。
+- **專案備用技能處置**：前端 GUI 美學全功能套件（`frontend-suite`）、辦公文檔四件套（`document-skills`）、生圖/影音（`gemini-web-imagegen`、`google-flow-bridge`）等確認屬專案專屬性質（非全域），保留在 `ai.agent_skills\project\` 作為備用與共用範本庫，待未來特定專案需要時再複製進該專案的 `.agents/skills/`（2026-11-08 及 2026-11-10 使用者確認）。原重複的 `project/skill-creator/` 已整併移除，僅於 `.agents/skills/skill-creator/` 保留單份極簡強化版（`SKILL.md`、`init_skill.py`、`quick_validate.py`、`package_skill.py`）作為本倉庫開發、驗證與打包工具（2026-11-14 使用者確認）。
 - **專案專屬技能部署原則**：隨專案各自的 Git 倉庫版本控管與同步，免額外安裝腳本或全域設定。
 
 ## 三、待使用者決定（下次討論從這裡開始）
@@ -94,8 +96,9 @@
 
 | 倉庫路徑 | 技能名稱 | 來源 | 說明 |
 |---|---|---|---|
-| D:\AI_Workspace\ai.agent_skills\global\opencode-runner | opencode-runner | 自訂 | 調用 OpenCode CLI 唯讀審查與比對規範（全域技能母本，開發機與管制機通用） |
-| D:\AI_Workspace\ai.agent_skills\global\system-remnant-audit | system-remnant-audit | 自訂 | 四大 AI Agent 與 Windows Jump Lists 唯讀歷史殘骸健檢技能與 Python 腳本（全域技能母本） |
+| `D:\AI_Workspace\ai.agent_skills\global\opencode-runner` | opencode-runner | 自訂 | 調用 OpenCode CLI 唯讀審查與比對規範（全域技能母本，開發機與管制機通用） |
+| `D:\AI_Workspace\ai.agent_skills\global\system-remnant-audit` | system-remnant-audit | 自訂 | 四大 AI Agent 與 Windows Jump Lists 唯讀歷史殘骸健檢技能與 Python 腳本（全域技能母本） |
+| `D:\AI_Workspace\ai.agent_skills\global\codex-imagegen-bridge` | codex-imagegen-bridge | 自訂 | 跨工具調用 Codex CLI `$imagegen` 生圖橋接規範（部署至 Antigravity、Claude Code、OpenCode，採管線 `-` 防 stdin 卡死） |
 | D:\AI_Workspace\ai.agent_skills\project\frontend-suite | frontend-suite | Anthropic 官方 | 前端 GUI 排版與設計全功能四合一套件（涵蓋美學防套版、10款主題色票、React+shadcn單檔打包、Playwright截圖驗證） |
 | D:\AI_Workspace\ai.agent_skills\project\document-skills | document-skills | Anthropic 官方 | Office 與 PDF 全功能處理套件（Word 排版、Excel recalc 重算、PPT 生成、PDF 提取填表） |
 | D:\AI_Workspace\ai.agent_skills\project\cli-creator | cli-creator | OpenAI 官方 | 建立高品質、可由命令行直接調用、輸出穩定 JSON、具備良好錯誤代碼與伴生 Skill 的標準化 CLI 工具 |
@@ -115,7 +118,7 @@
 
 | 專案分類與路徑 | 技能名稱 | 說明 |
 |---|---|---|
-| **技能母本庫專案**<br>`D:\AI_Workspace\ai.agent_skills\.agents\skills\` | `skill-creator` | Agent Skills 製作、重構、格式驗證（`quick_validate.py`）與打包（`package_skill.py`）極簡版常駐技能 |
+| **技能母本庫專案**<br>`D:\AI_Workspace\ai.agent_skills\.agents\skills\` | `skill-creator` | Agent Skills 骨架初始化（`init_skill.py`）、格式驗證（`quick_validate.py`）與潔淨打包（`package_skill.py`）極簡強化版常駐技能 |
 | **短片影音專案**<br>`D:\AI_Workspace\media.projects\short.video_studio\agent\skills\` | `blender-previs` | 山獅霸 AI 短劇的 Blender 3D 空間白模預演、鏡位契約、布置圖鎖定與提示詞素材打包 |
 | 同上 | `shanshiba-drama` | AI 短劇編劇與雙軌執行導演（V2.5 雙軌模式：原創/改編/抽幀逆向，排鏡表與提示詞流） |
 | **逆向工程專案**<br>`D:\AI_Workspace\reverse.projects\rea\.agents\skills\` | `reverse-engineer-anything` | 本機、二進制、韌體、Electron 與瀏覽器目標的逆向工程與反編譯分析工具 |
@@ -165,3 +168,5 @@
 | 2026-11-14 | 住家開發機 | 將外層 colab-notebook 與 project/jupyter-notebook 整合重構為雙支柱聚合技能 project/notebook-suite/，通過腳本編譯、validate --strict、new/clean 實測與部署驗證 |
 | 2026-11-14 | 住家開發機 | 新增全域技能 global/system-remnant-audit/（SKILL.md 與唯讀健檢腳本 audit_remnants.py），升級 deploy_global_skills.bat/.sh 支援 scripts/ 同步並通過四大 Agent 全域部署與實測驗證 |
 | 2026-11-14 | 住家開發機 | 移除重複之 project/skill-creator/ 並將 .agents/skills/skill-creator/ 瘦身為單份極簡版（僅留 SKILL.md、無相依版 quick_validate.py、package_skill.py），微調 opencode-runner description 通過全庫 11/11 驗證並同步部署四大 Agent，更新 AGENTS.md、README.md 與 PROGRESS.md |
+| 2026-11-14 | 住家開發機 | 追查作圖風格專案 codex exec 卡死（Reading additional input from stdin...）與 codex.cmd 引號拆參問題，將 codex-imagegen-bridge 納入 global/ 統一修補為無 BOM UTF-8 管線傳參（-），更新 deploy_global_skills.bat/.sh 部署至三大 Agent 並通過全庫 12/12 驗證 |
+| 2026-11-14 | 住家開發機 | 整合跨平台極簡強化版至 .agents/skills/skill-creator/（SKILL.md、init_skill.py、quick_validate.py、package_skill.py），補齊五大平台與 --gemini 打包支援，並將 project/notebook-suite/SKILL.md 改為單行 description 通過全庫 12/12 嚴格驗證 |

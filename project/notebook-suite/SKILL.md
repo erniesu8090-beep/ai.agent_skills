@@ -1,7 +1,6 @@
 ---
 name: notebook-suite
-description: >-
-  建立、鷹架生成、重構、清理與驗證 Jupyter 筆記本與 Google Colab 雲端 GPU 筆記本（.ipynb）的全功能套件。涵蓋：(1) Google Colab 雲端 GPU 筆記本（L4、A100、G4、T4 算力試跑、# @title 摺疊表單與 # @param 參數、uv 獨立環境隔離、HTML 狀態卡片與 @@ 進度表、輸出與 executionInfo 清理、AST 語法檢查）；(2) 本機 Jupyter 實驗分析型（experiment）與教學導向型（tutorial）筆記本鷹架生成。當使用者需要建立或編輯 .ipynb、把本機腳本或模型推論搬上 Colab 雲端 GPU 試跑、整理研究探索筆記、清理筆記本執行痕跡或驗證 .ipynb 結構與語法時皆可使用。
+description: "建立、鷹架生成、重構、清理與驗證 Jupyter 筆記本與 Google Colab 雲端 GPU 筆記本（.ipynb）的全功能套件。涵蓋：(1) Google Colab 雲端 GPU 筆記本（L4、A100、G4、T4 算力試跑、# @title 摺疊表單與 # @param 參數、uv 獨立環境隔離、HTML 狀態卡片與 @@ 進度表、輸出與 executionInfo 清理、AST 語法檢查）；(2) 本機 Jupyter 實驗分析型（experiment）與教學導向型（tutorial）筆記本鷹架生成。當使用者需要建立或編輯 .ipynb、把本機腳本或模型推論搬上 Colab 雲端 GPU 試跑、整理研究探索筆記、清理筆記本執行痕跡或驗證 .ipynb 結構與語法時皆可使用。"
 license: Apache-2.0
 ---
 
