@@ -1,13 +1,13 @@
 # PROGRESS　進度與交接
 
-> 最後更新：2026-11-12（管制機）
+> 最後更新：2026-11-14（住家開發機）
 > 新對話接手：先讀 `AGENTS.md` → 本檔
 
 ## 一、目前階段
 
 **維護中**。
 
-- 最後一次 commit：`3f2e2fd`（收納 OpenAI 官方精選三合一技能 cli-creator, gh-fix-ci, jupyter-notebook）
+- 最後一次 commit：`13c5140`（docs(progress): 記錄 11/12 前端去 AI 美學規範架構定案與進度交接）
 
 已完成：
 
@@ -24,6 +24,7 @@
 11. 移除 `global/frontend-design/` 並移入 `_pending_delete_/`，更新 `deploy_global_skills.bat` / `.sh`，加入自動清理各 Agent 下線技能邏輯，全域技能收斂為唯一之 `opencode-runner`。
 12. 將 Web 3D 檢視器技能 `threejs` 自 `ai.agent_rules` 遷入 `project/threejs/` 作為專案備用母本，補齊雙庫解耦與 README 技能清單（2026-11-10）。
 13. 前端 UI「去 AI 樣板味」美學規範入全域規則（2026-11-12）：經使用者確認採「美學規範入全域規則，重型套件留專案備用」架構，將「暖米白底色、石墨炭灰、機能邊條編碼、克制圓角」等反 AI 樣板原則寫入 `ai.agent_rules/global_rules.md` 第 7 節並完成全域派發；`project/frontend-suite/` 完整 React+shadcn+Playwright 套件則維持專案備用庫按需取用。
+14. 將外層 `colab-notebook`（Google Colab 雲端 GPU 筆記本技能）與既有 `project/jupyter-notebook` 合併重構為單一雙支柱聚合技能 `project/notebook-suite/`，採 Router 架構分流本機 Jupyter（實驗/教學）與雲端 Colab GPU 筆記本，並將原目錄安全移入 `_pending_delete_/`（2026-11-14）。
 
 ## 二、使用者已確認的事
 
@@ -97,7 +98,7 @@
 | D:\AI_Workspace\ai.agent_skills\project\skill-creator | skill-creator | Anthropic 官方 | 建立、優化、評測與除錯 Agent Skills 的標準指引與評估工具（專案備用母本） |
 | D:\AI_Workspace\ai.agent_skills\project\cli-creator | cli-creator | OpenAI 官方 | 建立高品質、可由命令行直接調用、輸出穩定 JSON、具備良好錯誤代碼與伴生 Skill 的標準化 CLI 工具 |
 | D:\AI_Workspace\ai.agent_skills\project\gh-fix-ci | gh-fix-ci | OpenAI 官方 | 排查並修復 GitHub Actions 失敗的 PR checks，自動提取錯誤日誌摘要、擬定修復計畫並驗證 |
-| D:\AI_Workspace\ai.agent_skills\project\jupyter-notebook | jupyter-notebook | OpenAI 官方 | 建立、鷹架生成或編輯 Jupyter 筆記本（.ipynb），提供實驗分析與教學導向標準範本，避免手刻 JSON 損壞 |
+| D:\AI_Workspace\ai.agent_skills\project\notebook-suite | notebook-suite | OpenAI 官方 + 自訂 | Jupyter 與 Google Colab 雲端 GPU 筆記本全功能雙支柱套件（涵蓋 Colab GPU 摺疊表單骨架、清理與 AST 驗證，以及本機實驗/教學筆記本鷹架） |
 | D:\AI_Workspace\ai.agent_skills\project\gemini-web-imagegen | gemini-web-imagegen | 自訂 | 免 API 金鑰 2K AI 生圖與圖生圖工具（專案備用母本，需要時放入特定專案） |
 | D:\AI_Workspace\ai.agent_skills\project\google-flow-bridge | google-flow-bridge | 自訂 | 免 API 金鑰調用 Google Flow 生成 2K 圖片或 Veo 影片（專案備用母本，需要時放入特定專案） |
 
@@ -159,3 +160,4 @@
 | 2026-11-10 | 公司開發機 | 依據 /skill-creator 標準將前端美學四件套合併為單一聚合技能 project/frontend-suite/，採四本柱 Router 架構；移除 global/frontend-design/ 並更新部署腳本為僅部署 opencode-runner |
 | 2026-11-10 | 住家開發機 | 調研 OpenAI 官方技能庫 openai/skills，收納 cli-creator、gh-fix-ci 與 jupyter-notebook 至 project/ 專案備用庫，完成多 Agent 中立化改寫與自動化驗證 |
 | 2026-11-12 | 管制機 | 前端 UI 採「美學規範入全域規則，重型套件留專案備用」架構，將暖米底色、石墨炭灰與反套版原則寫入 global_rules.md 並完成三大 Agent 全域派發 |
+| 2026-11-14 | 住家開發機 | 將外層 colab-notebook 與 project/jupyter-notebook 整合重構為雙支柱聚合技能 project/notebook-suite/，通過腳本編譯、validate --strict、new/clean 實測與部署驗證 |
