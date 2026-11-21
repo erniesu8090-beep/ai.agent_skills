@@ -26,7 +26,7 @@
 | `global/opencode-runner/` | OpenCode CLI Runner | 全域技能 | 自訂 | 提供 OpenCode 子代理唯讀審查（`--agent plan`）、防卡死調用（`< nul`）與動態工作池安全規範。 |
 | `global/system-remnant-audit/` | System Remnant Audit | 全域技能 | 自訂 | 一鍵唯讀盤點四大 AI Agent 家目錄（`.gemini`、`.claude`、`.codex`、`.config/opencode`）、Windows AppData 舊版快取與工作列 Jump Lists 歷史殘骸，先報清單再經確認移入回收筒。 |
 | `global/codex-imagegen-bridge/` | Codex Image Generation Bridge | 全域技能 | 自訂 | 跨工具（Antigravity、Claude Code、OpenCode）調用本機 `codex exec` + `$imagegen` 生圖橋接規範；採管線 `-` 傳參與無 BOM UTF-8 編碼防 stdin 卡死及 `codex.cmd` 引號拆參。 |
-| `project/frontend-suite/` | Frontend Suite (UI/UX, Theming & Testing) | 專案備用 | Anthropic 官方 | 前端 GUI 排版與設計全功能四合一套件：涵蓋前端美學與反樣板感（frontend-design）、10 款主題與色票生成（theme-factory）、React 18 + shadcn 工程化打包（web-artifacts-builder）、Playwright 截圖排版驗證（webapp-testing）。 |
+| `project/frontend-suite/` | Frontend Suite (UI/UX, Theming & Testing) | 專案備用 | Anthropic 官方 + 社群精選 | 前端 GUI 排版與設計全功能套件：涵蓋前端美學與反樣板感（frontend-design）、舊介面去 AI 味體檢與 9 步翻修（unslop-audit）、10 款主題與色票生成（theme-factory）、React 18 + shadcn 工程化打包（web-artifacts-builder）、Playwright 截圖排版驗證（webapp-testing）。 |
 | `project/document-skills/` | Document Skills Suite (Office & PDF) | 專案備用 | Anthropic 官方 | Office 與 PDF 全功能處理套件：涵蓋 Word 排版、Excel 試算表與 recalc 公式重算、PPT 投影片生成、PDF 提取與表單填寫。 |
 | `project/notebook-suite/` | Notebook Suite (Jupyter & Colab GPU) | 專案備用 | OpenAI 官方 + 自訂 | Jupyter 與 Google Colab 雲端 GPU 筆記本全功能雙支柱套件：涵蓋 Colab 雲端 GPU（L4/A100/G4）互動表單骨架、獨立環境隔離、執行痕跡清理與 AST 語法驗證，以及本機實驗分析型（experiment）與教學導向型（tutorial）筆記本鷹架生成。 |
 | `project/cli-creator/` | CLI Creator | 專案備用 | OpenAI 官方 | 建立高品質、可由命令行直接調用、輸出穩定 JSON、具備良好錯誤代碼與伴生 Skill 的標準化 CLI 工具。 |
@@ -38,6 +38,7 @@
 > **來源說明**：
 > - **Anthropic 官方**：引用自 Anthropic 官方開源技能庫 [`anthropics/skills`](https://github.com/anthropics/skills)。
 > - **OpenAI 官方**：引用自 OpenAI 官方開源技能庫 [openai/skills](https://github.com/openai/skills)。
+> - **社群精選**：`project/frontend-suite/references/unslop-audit.md` 改編並精簡自 Damir Sokolovsky（`@heydamir`）之 [`heydamir/unslop`](https://github.com/heydamir/unslop)（CC BY 4.0 授權）。
 > - **自訂**：本工作區依特定工作流或跨引擎需求自研之專案與全域規範。
 
 ---

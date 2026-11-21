@@ -1,12 +1,12 @@
 ---
 name: frontend-suite
-description: Comprehensive frontend UI/UX design, theming, component engineering, and testing suite. Combines distinctive visual design principles (anti-AI slop), 10 curated color/typography themes (theme-factory), full-featured React 18 + TypeScript + Vite + Tailwind CSS + shadcn/ui component scaffolding with single-file HTML bundling (web-artifacts-builder), and Playwright-based browser visual testing and screenshot verification (webapp-testing). Use when designing, building, styling, beautifying, refactoring, or verifying web frontends, landing pages, dashboards, interactive artifacts, or GUI layouts.
+description: Comprehensive frontend UI/UX design, theming, component engineering, anti-AI-slop polishing, and testing suite. Combines distinctive visual design principles (anti-AI slop), structured existing-UI unslop audit and 9-pass polishing workflow, 10 curated color/typography themes (theme-factory), React 18 + TypeScript + Vite + Tailwind CSS + shadcn/ui scaffolding with single-file HTML bundling (web-artifacts-builder), and Playwright visual testing (webapp-testing). Use when designing, building, unslopping, polishing, refactoring, or verifying web frontends, landing pages, dashboards, or GUI layouts.
 license: Apache-2.0
 ---
 
-# Frontend Suite (UI/UX Design, Theming, Scaffolding & Verification)
+# Frontend Suite (UI/UX Design, Unslop Polishing, Scaffolding & Verification)
 
-This skill provides a unified, production-grade toolkit for designing, styling, building, and verifying modern web user interfaces and interactive artifacts.
+This skill provides a unified, production-grade toolkit for designing, polishing, building, and verifying modern web user interfaces and interactive artifacts.
 
 ## Four Pillars Architecture
 
@@ -14,14 +14,25 @@ Depending on your task, refer to the corresponding sub-guide in `references/`:
 
 | Pillar | Focus | Primary Sub-Guide | Key Assets / Scripts |
 |---|---|---|---|
-| **1. Visual Design & Aesthetic Direction** | Anti-AI slop, typography hierarchy, visual rhythm, copywriting | `references/design-principles.md` | Opinionated aesthetic guidelines |
+| **1. Visual Design & Unslop Polishing** | New-build anti-AI aesthetic principles + existing-UI slop audit & 9-pass polish | `references/design-principles.md`<br>`references/unslop-audit.md` | Opinionated design & redline checklist |
 | **2. Color Palettes & Font Pairing** | 10 curated themes, custom theme generation, hex codes | `references/theme-factory.md` | `themes/*.md`, `themes/theme-showcase.pdf` |
 | **3. Component Engineering & Bundling** | React 18, TypeScript, Vite, Tailwind, 40+ shadcn/ui, single-file HTML | `references/web-artifacts.md` | `scripts/init-artifact.sh`, `scripts/bundle-artifact.sh`, `scripts/shadcn-components.tar.gz` |
 | **4. Visual Testing & Verification** | Playwright browser automation, screenshots, RWD layout checks | `references/webapp-testing.md` | `scripts/with_server.py`, `examples/*.py` |
 
 ---
 
-## Recommended Golden Workflow
+## Workflow Router: Choose Your Mode
+
+- **Mode A — New Build (0 → 1)**: Building a fresh app, dashboard, landing page, or interactive artifact → follow **Recommended Golden Workflow** below.
+- **Mode B — Existing UI Unslop / Polish (Refurbish)**: Cleaning up an already-written, vibecoded, or AI-looking screen (purple gradients, glows, emoji labels, `transition-all`, arbitrary spacing, fake copy) → follow `references/unslop-audit.md`:
+  1. **Audit & Classify**: Inspect the rendered screen/code against the slop tells table and classify as `Heavy slop` (full 9 passes), `Light slop` (Polish mode: fix only listed issues, keep brand), or `No slop` (report clean, propose at most 2–3 tiny tweaks).
+  2. **5-Line Direction Gate**: Define `Product`, `Character`, `World`, `Moments`, and `Signature` and confirm with the user before editing.
+  3. **9 Ordered Passes**: Execute across the whole screen in strict order: **1. Spacing (4px grid) → 2. Color (neutral ramp + 1 accent) → 3. Icons (no emoji, single line set) → 4. Copy → 5. Type (`tabular-nums`, weights 400–600) → 6. Layout → 7. Details (nested radius math, chart hierarchy, clean stat cards) → 8. Visuals → 9. Motion (no `transition-all` / `animate-pulse`)**.
+  4. **Verify**: Run the checklist in `references/unslop-audit.md` and re-check rendered screenshots if available.
+
+---
+
+## Mode A: Recommended Golden Workflow (New Build)
 
 Follow this 5-step workflow to build or revamp high-quality frontends:
 
