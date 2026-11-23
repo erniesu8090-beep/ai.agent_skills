@@ -1,12 +1,12 @@
 ---
 name: frontend-suite
-description: Comprehensive frontend UI/UX design, anti-AI-slop quality gates (Floor/Reflex/Finish), Audit/Redesign/Study modes, theming, React+shadcn bundling, and static/Playwright verification suite. Use when designing, building, auditing, redesigning, styling, or verifying web frontends, landing pages, dashboards, and interactive HTML artifacts.
+description: Comprehensive frontend UI/UX design, theming, component engineering, anti-AI-slop quality gates (Floor/Reflex/Finish), structured unslop audit and 9-pass polishing workflow, Audit/Redesign/Study modes, and static/Playwright verification suite. Use when designing, building, auditing, unslopping, redesigning, polishing, styling, or verifying web frontends, landing pages, dashboards, interactive artifacts, or GUI layouts.
 license: Apache-2.0
 ---
 
-# Frontend Suite (UI/UX Design, Anti-Slop Gates, Theming & Verification)
+# Frontend Suite (UI/UX Design, Anti-Slop Gates, Unslop Polishing, Scaffolding & Verification)
 
-This skill provides a unified, production-grade toolkit for designing, auditing, redesigning, building, and verifying modern web user interfaces and interactive artifacts—integrating Anthropic frontend engineering patterns with `Nutlope/hallmark` v2 anti-AI-slop methodology and our warm-minimalist default aesthetic.
+This skill provides a unified, production-grade toolkit for designing, auditing, unslopping, redesigning, building, and verifying modern web user interfaces and interactive artifacts—integrating Anthropic frontend engineering patterns, `heydamir/unslop` 9-pass refurbishment, `Nutlope/hallmark` v2 quality gates, and our warm-minimalist default aesthetic.
 
 ## Five Pillars Architecture
 
@@ -15,25 +15,25 @@ Depending on your task, refer to the corresponding sub-guide in `references/`:
 | Pillar | Focus | Primary Sub-Guide | Key Assets / Scripts |
 |---|---|---|---|
 | **1. Visual Design & Aesthetic Direction** | Anti-AI slop philosophy, typography hierarchy, visual rhythm, copywriting | `references/design-principles.md` | Opinionated aesthetic guidelines |
-| **2. Anti-Slop Gates & Operation Modes** | Pre-flight, Hero-first isolation, Floor/Reflex/Finish gates, Audit/Redesign/Study | `references/anti-slop-gates.md` | `scripts/slop_lint.py` |
+| **2. Anti-Slop Gates & Refurbish Polish** | Pre-flight, Hero-first, Floor/Reflex/Finish gates, Audit/Redesign/Study + 9-pass unslop | `references/anti-slop-gates.md`<br>`references/unslop-audit.md` | `scripts/slop_lint.py` & redline checklist |
 | **3. Color Palettes & Font Pairing** | 10 curated themes, custom theme generation, hex codes | `references/theme-factory.md` | `themes/*.md`, `themes/theme-showcase.pdf` |
 | **4. Component Engineering & Bundling** | React 18, TypeScript, Vite, Tailwind, 40+ shadcn/ui, single-file HTML | `references/web-artifacts.md` | `scripts/init-artifact.sh`, `scripts/bundle-artifact.sh`, `scripts/shadcn-components.tar.gz` |
 | **5. Static & Browser Verification** | Static slop linting, Playwright browser automation, multi-viewport RWD checks | `references/webapp-testing.md` | `scripts/slop_lint.py`, `scripts/with_server.py`, `examples/*.py` |
 
 ---
 
-## Mode Selection (Choose Before Writing Code)
+## Workflow Router: Choose Your Mode
 
-| Mode | When to Use | Core Rule |
+| Mode | When to Use | Core Rule & Sub-Guides |
 |---|---|---|
-| **Build (新建)** | Building a new page, dashboard, or HTML tool from scratch | Follow the 5-step Golden Workflow below (Pre-flight → Theme → Hero-first → Build → Verify). |
-| **Audit (唯讀體檢)** | Inspecting an existing UI for AI slop, accessibility, or layout flaws | Run `scripts/slop_lint.py` + `references/anti-slop-gates.md`; output Floor/Reflex/Finish report **without modifying source files**. |
-| **Redesign (安全翻新)** | Overhauling an existing AI-slop UI while keeping logic intact | Follow Redesign Invariants in `references/anti-slop-gates.md`: preserve all `<a href>`, `<form>`, input names/IDs, handlers, and real data. |
-| **Study (DNA 萃取)** | User supplies a reference site or screenshot | Extract color ratios, type scale, spacing rhythm, and focal restraint—never clone templates verbatim. |
+| **Mode A — New Build (0 → 1)** | Building a fresh app, dashboard, landing page, or interactive HTML tool | Follow **Recommended Golden Workflow** below (Pre-flight → Theme → Hero-first → Build → Verify). |
+| **Mode B — Audit (唯讀體檢)** | Inspecting an existing screen/code for AI slop, accessibility, or layout flaws | Run `scripts/slop_lint.py` + `references/anti-slop-gates.md` & `references/unslop-audit.md`; classify as `Heavy slop` / `Light slop` / `No slop` and output a prioritized report **without modifying source files**. |
+| **Mode C — Redesign / Polish (既有介面安全翻新)** | Cleaning up or overhauling an existing vibecoded / AI-slop interface | 1. Lock **Redesign Invariants** in `references/anti-slop-gates.md` (preserve all `<a href>`, `<form>`, input names/IDs, handlers, and real data).<br>2. Confirm **5-Line Direction Gate** (`Product`, `Character`, `World`, `Moments`, `Signature`) and execute the **9 Ordered Passes** in `references/unslop-audit.md`: **Spacing (4px grid) → Color → Icons → Copy → Type → Layout → Details → Visuals → Motion**.<br>3. Run `scripts/slop_lint.py` & checklist verification. |
+| **Mode D — Study (參考 DNA 萃取)** | User supplies a reference site or screenshot | Extract color ratios, type scale, spacing rhythm, and focal restraint (`references/anti-slop-gates.md`)—never clone templates verbatim. |
 
 ---
 
-## Recommended Golden Workflow (Build Mode)
+## Mode A: Recommended Golden Workflow (New Build)
 
 ### Step 1: Pre-flight & Aesthetic Grounding
 - **Inventory & Truthfulness**: Read existing project tokens/styles first; ask the user for missing real copy, metrics, or images—never invent fake testimonials or placeholder stats.

@@ -29,7 +29,8 @@
 16. 單份極簡瘦身 `skill-creator` 並通過全庫驗證（2026-11-14）：移除重複之 `project/skill-creator/` 與 `.agents/skills/skill-creator/` 內重型 Eval 評測模組（移入 `_pending_delete_/`），僅留單份核心規範（`SKILL.md`、無第三方相依之 `quick_validate.py`、`package_skill.py`）；同步微調 `global/opencode-runner/SKILL.md` description 移除角括號，使全庫 11 個技能全數通過 `quick_validate.py` 驗證並完成四大 Agent 全域部署，更新 `AGENTS.md`、`README.md` 與 `PROGRESS.md`。
 17. 納管並修補全域生圖橋接技能 `global/codex-imagegen-bridge/`（2026-11-14）：追查今日 `作圖風格` 專案 `codex exec` 卡死在 `Reading additional input from stdin...` 與雙引號遭 `codex.cmd` 拆散問題，將 `codex-imagegen-bridge` 正式收入 `global/` 統一維護，改為無 BOM UTF-8 管線傳參（`$prompt | codex exec ... -`）並補齊 Python `subprocess.DEVNULL` 與禁用 `--dangerously-skip-permissions` 規範；更新 `deploy_global_skills.bat` / `.sh` 部署至 Antigravity、Claude Code、OpenCode 三大全域目錄並通過全庫驗證。
 18. 升級 `.agents/skills/skill-creator/` 為跨平台極簡強化版並統一單行 `description`（2026-11-14）：吸收整合三平台版核心腳本（`init_skill.py`、`quick_validate.py`、`package_skill.py`，不納入重型與缺檔之 `eval-viewer/` 與 `agents/`），補齊五大平台（Antigravity、Claude Code、Codex、OpenCode、Gemini App）規範，新增 24KB 上限、單行 `description` 嚴格檢查與 `--gemini` 白名單打包；同步將 `project/notebook-suite/SKILL.md` 改為單行 `description`，通過全庫 12/12 `--strict` 驗證與腳本實測。
-19. 吸收 `Nutlope/hallmark` v2 去 AI 味精華並升級 `project/frontend-suite/`（2026-11-23）：整合 Pre-flight 真實素材盤點、Hero 先行隔離審查、Floor/Reflex/Finish 三級品質閘門、Audit/Redesign/Study 三大操作模式至 `references/anti-slop-gates.md` 與 `SKILL.md`；新增免 Node 相依的純 Python 靜態去 AI 味檢查腳本 `scripts/slop_lint.py`，並於 `references/webapp-testing.md` 補齊多寬度 RWD 溢出檢查流程，通過 `--strict` 驗證與樣本 HTML 實測。
+19. 吸收 `heydamir/unslop` 精華併入 `project/frontend-suite/`（2026-11-21）：經評估不整包引入（剔除 32KB 原文中的 Story video、RTL 與展示圖庫），將其 AI 味診斷表、Heavy/Light/No slop 分級、5 行方向門檻與 9 道順序翻修量化規範濃縮寫入 `project/frontend-suite/references/unslop-audit.md`（保留 CC BY 4.0 `@heydamir` 署名並與全域第 7 節美學協調），更新 `project/frontend-suite/SKILL.md` 雙模式分流與 `README.md` 來源說明，全庫驗證與全域部署回歸通過。
+20. 吸收 `Nutlope/hallmark` v2 去 AI 味精華並與 `unslop` 雙向整併至 `project/frontend-suite/`（2026-11-23）：整合 Pre-flight 真實素材盤點、Hero 先行隔離審查、Floor/Reflex/Finish 三級品質閘門與 Audit/Redesign/Study 模式至 `references/anti-slop-gates.md`；新增免 Node 相依的純 Python 靜態去 AI 味檢查腳本 `scripts/slop_lint.py`；於 `references/webapp-testing.md` 補齊多寬度 RWD 溢出檢查流程，並與 `unslop-audit.md` 之 9 步翻修順序完成 SKILL 路由整併，通過 `--strict` 驗證與樣本 HTML 實測。
 
 ## 二、使用者已確認的事
 
@@ -100,7 +101,7 @@
 | `D:\AI_Workspace\ai.agent_skills\global\opencode-runner` | opencode-runner | 自訂 | 調用 OpenCode CLI 唯讀審查與比對規範（全域技能母本，開發機與管制機通用） |
 | `D:\AI_Workspace\ai.agent_skills\global\system-remnant-audit` | system-remnant-audit | 自訂 | 四大 AI Agent 與 Windows Jump Lists 唯讀歷史殘骸健檢技能與 Python 腳本（全域技能母本） |
 | `D:\AI_Workspace\ai.agent_skills\global\codex-imagegen-bridge` | codex-imagegen-bridge | 自訂 | 跨工具調用 Codex CLI `$imagegen` 生圖橋接規範（部署至 Antigravity、Claude Code、OpenCode，採管線 `-` 防 stdin 卡死） |
-| D:\AI_Workspace\ai.agent_skills\project\frontend-suite | frontend-suite | Anthropic 官方 + Hallmark v2 | 前端 GUI 排版與去 AI 味五合一套件（涵蓋美學防套版、Hallmark v2 Floor/Reflex/Finish 閘門與 Audit/Redesign 模式、`slop_lint.py` 靜態檢查、10款主題色票、React+shadcn單檔打包、Playwright多寬度驗證） |
+| `D:\AI_Workspace\ai.agent_skills\project\frontend-suite` | frontend-suite | Anthropic 官方 + `heydamir/unslop` + `Nutlope/hallmark` v2 | 前端 GUI 排版與去 AI 味五合一套件（涵蓋美學防套版、9 步有序翻修、`hallmark` Floor/Reflex/Finish 閘門與 Audit/Redesign 模式、`slop_lint.py` 靜態檢查、10 款主題色票、React+shadcn 單檔打包、Playwright 多寬度驗證） |
 | D:\AI_Workspace\ai.agent_skills\project\document-skills | document-skills | Anthropic 官方 | Office 與 PDF 全功能處理套件（Word 排版、Excel recalc 重算、PPT 生成、PDF 提取填表） |
 | D:\AI_Workspace\ai.agent_skills\project\cli-creator | cli-creator | OpenAI 官方 | 建立高品質、可由命令行直接調用、輸出穩定 JSON、具備良好錯誤代碼與伴生 Skill 的標準化 CLI 工具 |
 | D:\AI_Workspace\ai.agent_skills\project\gh-fix-ci | gh-fix-ci | OpenAI 官方 | 排查並修復 GitHub Actions 失敗的 PR checks，自動提取錯誤日誌摘要、擬定修復計畫並驗證 |
@@ -171,4 +172,5 @@
 | 2026-11-14 | 住家開發機 | 移除重複之 project/skill-creator/ 並將 .agents/skills/skill-creator/ 瘦身為單份極簡版（僅留 SKILL.md、無相依版 quick_validate.py、package_skill.py），微調 opencode-runner description 通過全庫 11/11 驗證並同步部署四大 Agent，更新 AGENTS.md、README.md 與 PROGRESS.md |
 | 2026-11-14 | 住家開發機 | 追查作圖風格專案 codex exec 卡死（Reading additional input from stdin...）與 codex.cmd 引號拆參問題，將 codex-imagegen-bridge 納入 global/ 統一修補為無 BOM UTF-8 管線傳參（-），更新 deploy_global_skills.bat/.sh 部署至三大 Agent 並通過全庫 12/12 驗證 |
 | 2026-11-14 | 住家開發機 | 整合跨平台極簡強化版至 .agents/skills/skill-creator/（SKILL.md、init_skill.py、quick_validate.py、package_skill.py），補齊五大平台與 --gemini 打包支援，並將 project/notebook-suite/SKILL.md 改為單行 description 通過全庫 12/12 嚴格驗證 |
-| 2026-11-23 | 管制機 | 吸收 Nutlope/hallmark v2 去 AI 味精華升級 project/frontend-suite/：新增 references/anti-slop-gates.md（Pre-flight、Hero 先行、Floor/Reflex/Finish、Audit/Redesign/Study）與純 Python 腳本 scripts/slop_lint.py，並同步更新 SKILL.md、design-principles.md、webapp-testing.md、README.md 與 PROGRESS.md |
+| 2026-11-21 | 住家開發機 | 吸收 heydamir/unslop 精華新增 references/unslop-audit.md（5 行方向門檻與 9 步有序翻修規範），並更新 SKILL.md、README.md 與 PROGRESS.md |
+| 2026-11-23 | 管制機 | 吸收 Nutlope/hallmark v2 去 AI 味精華並整併 unslop 規範升級 project/frontend-suite/：新增 references/anti-slop-gates.md 與純 Python 腳本 scripts/slop_lint.py，完成 SKILL.md、design-principles.md、webapp-testing.md、README.md 與 PROGRESS.md 合併整併並推送 GitHub |
