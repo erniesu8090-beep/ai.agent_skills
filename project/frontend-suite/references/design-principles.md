@@ -63,3 +63,12 @@ Use active voice as default. A CTA says exactly what happens when it is used: "S
 Treat failure and emptiness as moments for direction, not mood. Explain what went wrong and how to fix it, in the interface's voice rather than a person's. Errors don't apologize, and they are never vague about what happened. An empty screen is an invitation to act.
 
 Keep the tone conversational: plain verbs, sentence case, no filler, with tone matched to the brand and the audience. Let each written element do exactly one job.
+
+---
+
+## Integration with Anti-Slop Gates & Build Runbook
+
+Before starting implementation or refactoring an existing UI, pair these aesthetic principles with `references/anti-slop-gates.md`:
+- **Pre-flight & No Fabricated Content**: Audit existing project tokens and request missing copy/data first—never invent fake metrics, customer quotes, or placeholder stats.
+- **Hero-First Isolation**: Build and review the Hero section in isolation before expanding into secondary sections.
+- **Three-Tier Quality Gates**: Enforce zero-tolerance **Floor** rules (`:focus-visible`, `prefers-reduced-motion`, viewport meta, no `transition: all`), clear **Reflex** AI tells (eyebrow caps, middle-dot tags, purple gradients, excessive `rounded-3xl`, emoji icons), and verify with `python scripts/slop_lint.py`.

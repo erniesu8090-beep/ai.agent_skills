@@ -1,5 +1,17 @@
 # Web Application Testing
 
+## Step 0: Static Anti-AI-Slop Pre-Check
+
+Before spinning up headless browsers, run the zero-dependency Python linter to catch static **Floor** and **Reflex** issues (missing `:focus-visible`, `prefers-reduced-motion`, `viewport` meta, `transition: all`, or AI cliché patterns):
+
+```bash
+python scripts/slop_lint.py <path_to_html_or_dir>
+```
+
+Use `--strict-reflex` to fail on Reflex warnings as well, or `--json` for structured output.
+
+## Dynamic Testing with Playwright
+
 To test local web applications, write native Python Playwright scripts.
 
 **Helper Scripts Available**:
@@ -81,6 +93,7 @@ with sync_playwright() as p:
 - Always close the browser when done
 - Use descriptive selectors: `text=`, `role=`, CSS selectors, or IDs
 - Add appropriate waits: `page.wait_for_selector()` or `page.wait_for_timeout()`
+- **Multi-Viewport Overflow Check**: Always verify `document.documentElement.scrollWidth <= window.innerWidth` across desktop (`1440px`), tablet (`768px`), and mobile (`375px`) viewports to catch horizontal overflow regressions.
 
 ## Reference Files
 
