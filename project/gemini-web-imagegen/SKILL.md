@@ -1,6 +1,6 @@
 ---
 name: gemini-web-imagegen
-description: 使用個人 gemini.google.com 網頁版 Cookie 額度（免 API Key、零 API 費用）在任何專案中生成 2K AI 圖片或進行參考圖風格改圖（Image-to-Image）。當使用者提到「用 Gemini 網頁版生圖」、「用 Gemini Web 生圖」、「用 Cookie 額度生圖」，或當 Codex ($imagegen) 與 Antigravity 內建生圖觸發 429 配額上限時作為備援載入。若使用者需要文字問答、代碼生成、影片生成或 SVG 向量圖時請勿載入。
+description: 使用個人 gemini.google.com 網頁版 Cookie 額度（免 API Key、零 API 費用）在任何專案中生成 2K AI 圖片或進行參考圖風格改圖（Image-to-Image）。當使用者提到「用 Gemini 網頁版生圖」、「用 Gemini Web 生圖」、「用 Cookie 額度生圖」，或當第一優先 Antigravity 內建生圖觸發 429 配額上限時作為第二優先備援（Priority 2）載入。若使用者需要文字問答、代碼生成、影片生成或 SVG 向量圖時請勿載入。
 ---
 
 # Gemini Web 網頁版免費額度生圖橋接 (Gemini Web Imagegen Bridge)
@@ -9,8 +9,8 @@ description: 使用個人 gemini.google.com 網頁版 Cookie 額度（免 API Ke
 
 ## 定位與觸發時機
 
-1. **指名調用**：使用者明確要求「用 Gemini 網頁版生圖」、「用 Gemini Web 生圖」、「用第三引擎生圖」。
-2. **第三優先備援（Priority 3）**：當第一優先（Codex `$imagegen`）與第二優先（Antigravity `image-generator` 子代理）因短時間密集生圖觸發 `429 RESOURCE_EXHAUSTED`（5 小時配額上限）時，無縫切換至本技能接續出圖。
+1. **指名調用**：使用者明確要求「用 Gemini 網頁版生圖」、「用 Gemini Web 生圖」、「用第二引擎生圖」。
+2. **第二優先備援（Priority 2）**：當第一優先（Antigravity `image-generator` 子代理）因短時間密集生圖觸發 `429 RESOURCE_EXHAUSTED`（5 小時配額上限）時，無縫切換至本技能接續出圖。
 
 ## 前置環境與自動探索
 

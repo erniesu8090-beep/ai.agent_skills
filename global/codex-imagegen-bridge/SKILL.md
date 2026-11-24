@@ -1,17 +1,17 @@
 ---
 name: codex-imagegen-bridge
-description: Generate raster images from Antigravity, Claude Code, or OpenCode by delegating to the locally installed Codex CLI and its built-in $imagegen tool, using the existing ChatGPT login without an API key. Primary choice (Priority 1) whenever raster image generation is needed.
+description: Generate raster images from Antigravity, Claude Code, or OpenCode by delegating to the locally installed Codex CLI and its built-in $imagegen tool, using an existing paid ChatGPT Plus/Pro login without an API key. Fallback choice (Priority 3, requires ChatGPT Plus/Pro paid plan; Free plan does not expose built-in image_gen) when Antigravity and Gemini Web are unavailable or explicitly requested.
 ---
 
-# Codex Image Generation Bridge (Priority 1)
+# Codex Image Generation Bridge (Priority 3 — ChatGPT Plus/Pro Only)
 
 Use the local Codex CLI as a helper agent when generating raster images from Antigravity, Claude Code, or OpenCode. Codex performs the image generation using its built-in `$imagegen` tool; the calling agent prepares the prompt, runs the command with closed/piped stdin, verifies the file, and reports its path.
 
 ## Preconditions
 
 1. Confirm `codex` is available with `Get-Command codex` (or `command -v codex`).
-2. Run `codex login status`. Continue only when the active login is ChatGPT, not API-key authentication.
-3. If Codex is missing or not logged into ChatGPT, explain that the user needs to install Codex CLI or run `codex login` in a normal terminal, or fall back to Priority 2 (`agy-imagegen-bridge` / built-in `gemini-3.1-flash-image`). Do not ask for an API key and do not switch to `openai images`, `scripts/image_gen.py`, or another API fallback.
+2. Run `codex login status`. Continue only when the active login is a **paid ChatGPT Plus/Pro** account (not API-key authentication, and note that Free ChatGPT accounts do not expose built-in `image_gen` in Codex sessions; restricted networks also cannot reach Codex image generation).
+3. If Codex is missing, on a Free account without `image_gen`, or not logged into ChatGPT, fall back to Priority 1 (`agy-imagegen-bridge` / built-in `gemini-3.1-flash-image`) or Priority 2 (`gemini-web-imagegen`), or explain that the user needs a paid ChatGPT Plus/Pro account and `codex login`. Do not ask for an API key and do not switch to `openai images`, `scripts/image_gen.py`, or another API fallback.
 4. Never read, print, copy, or expose `%USERPROFILE%\.codex\auth.json`, access tokens, or other credential files.
 
 ## Generate an image
@@ -61,5 +61,5 @@ Use the local Codex CLI as a helper agent when generating raster images from Ant
 - `codex exec` must be able to use the user's existing Codex login and write its own session state. If the terminal sandbox blocks access to `%USERPROFILE%\.codex`, do not bypass the sandbox, copy credentials, or elevate permissions silently. Explain that the user can approve the specific command if the UI offers that option, or run the command from their normal PowerShell terminal.
 - If `codex exec` says the directory is not trusted, retain `--skip-git-repo-check`; do not weaken the filesystem sandbox.
 - Keep `--sandbox workspace-write`. Never use `--dangerously-bypass-approvals-and-sandbox` or `danger-full-access` for this workflow.
-- If the built-in `$imagegen` tool is missing, stop and report that the installed Codex CLI/auth configuration does not expose it, or fall back to Priority 2 (`agy-imagegen-bridge` / `gemini-3.1-flash-image`). Do not silently switch to an API-backed image generator.
+- If the built-in `$imagegen` tool is missing (e.g., on a Free ChatGPT plan), stop and report that the installed Codex CLI/auth configuration does not expose it, or fall back to Priority 1 (`agy-imagegen-bridge` / `gemini-3.1-flash-image`) or Priority 2 (`gemini-web-imagegen`). Do not silently switch to an API-backed image generator.
 - If generation succeeds but the target is missing, inspect Codex's command output and generated-image path, then copy only the image created by this run. Do not guess filenames or overwrite user files.
